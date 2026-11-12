@@ -1,6 +1,6 @@
 # Stopniodni – dane do kalkulatora na energetycznybroker.pl
 
-Dobowe średnie temperatury powietrza ze stacji synoptycznych IMGW-PIB (od 2016 r.), przygotowane dla
+Dobowe średnie temperatury powietrza ze stacji synoptycznych IMGW-PIB (od 2015 r.), przygotowane dla
 [kalkulatora stopniodni i oszczędności na ogrzewaniu](https://energetycznybroker.pl/kalkulator-stopniodni.html)
 prowadzonego przez PROFIT ENERGY Konrad Bojakowski.
 

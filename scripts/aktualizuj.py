@@ -20,7 +20,7 @@ import urllib.request
 import zipfile
 
 BASE = 'https://danepubliczne.imgw.pl/data/dane_pomiarowo_obserwacyjne/dane_meteorologiczne/dobowe/synop/'
-START = dt.date(2016, 1, 1)
+START = dt.date(2015, 1, 1)
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, 'dane', 'stopniodni')
 COORDS = json.load(open(os.path.join(ROOT, 'scripts', 'stacje_wspolrzedne.json'), encoding='utf-8'))
