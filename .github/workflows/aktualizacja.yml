@@ -29,4 +29,5 @@ jobs:
           else
             git commit -m "Aktualizacja danych IMGW-PIB $(date +%Y-%m-%d)"
             git push
+            for f in dane/stopniodni/*.json; do curl -s "https://purge.jsdelivr.net/gh/ProfitEnergy/stopniodni@main/$f" > /dev/null || true; done
           fi
