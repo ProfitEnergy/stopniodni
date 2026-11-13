@@ -55,38 +55,59 @@ for inner in glob.glob(TMP + '/**/*.zip', recursive=True):
         with zipfile.ZipFile(inner) as z: z.extractall(os.path.dirname(inner))
     except Exception as e: log('zip wewn.', inner, e)
 
-import shapefile
+from lxml import etree
 from pyproj import Transformer
-shps = [p for p in glob.glob(TMP + '/**/*.shp', recursive=True) if 'adres' in os.path.basename(p).lower() or 'pkt' in os.path.basename(p).lower() or 'punkt' in os.path.basename(p).lower()]
-if not shps: shps = glob.glob(TMP + '/**/*.shp', recursive=True)
-log('shp:', len(shps), shps[:20])
+gmls = sorted(glob.glob(TMP + '/**/*.gml', recursive=True))
+log('gml:', len(gmls))
 acc = collections.defaultdict(lambda: [0.0, 0.0, 0, collections.Counter()])
-tr_cache = {}
-for p in shps:
-    sf = shapefile.Reader(p, encoding='utf-8', encodingErrors='replace')
-    fields = [f[0] for f in sf.fields[1:]]
-    low = [f.lower() for f in fields]
-    ik = next((i for i, f in enumerate(low) if 'kod' in f and 'pocz' in f), next((i for i, f in enumerate(low) if f in ('kod', 'pna', 'kodpocztow')), None))
-    im = next((i for i, f in enumerate(low) if f.startswith('miejsc') and 'id' not in f), None)
-    log(os.path.basename(p), 'pola:', fields, 'kod:', ik, 'msc:', im, 'rekordów:', len(sf))
-    if ik is None: continue
-    prj = p[:-4] + '.prj'
-    wkt = open(prj, encoding='utf-8', errors='replace').read() if os.path.exists(prj) else ''
-    src = 'EPSG:2180' if ('1992' in wkt or 'CS92' in wkt or not wkt) else ('EPSG:4326' if 'GCS_ETRS_1989' in wkt or 'WGS' in wkt else 'EPSG:2180')
-    if src not in tr_cache: tr_cache[src] = Transformer.from_crs(src, 'EPSG:4326', always_xy=True)
-    tr = tr_cache[src]
-    n = 0
-    for sr in sf.iterShapeRecords():
-        if not sr.shape.points: continue
-        kod = str(sr.record[ik]).strip()
-        if len(kod) == 5 and kod.isdigit(): kod = kod[:2] + '-' + kod[2:]
-        if len(kod) != 6 or kod[2] != '-': continue
-        x, y = sr.shape.points[0]
-        a = acc[kod]; a[0] += x; a[1] += y; a[2] += 1
-        if im is not None: a[3][str(sr.record[im]).strip()] += 1
-        n += 1
-    log('  przetworzono', n)
-    a_src = src
+probka = None
+def loc(t): return t.rsplit('}', 1)[-1]
+for p in gmls:
+    n = 0; feat_tag = None
+    ctx = etree.iterparse(p, events=('end',), huge_tree=True, recover=True)
+    cur = {}
+    for ev, el in ctx:
+        ln = loc(el.tag)
+        if ln in ('kodPocztowy', 'KOD_POCZTOWY', 'kod_pocztowy'):
+            cur['kod'] = (el.text or '').strip()
+        elif ln in ('miejscowosc', 'MIEJSCOWOSC', 'nazwaMiejscowosci') and (el.text or '').strip():
+            cur.setdefault('msc', (el.text or '').strip())
+        elif ln == 'pos' and el.text:
+            cur['pos'] = el.text.split()
+        elif ln.startswith('PRG_PunktAdresowy') or ln in ('PunktAdresowy', 'AD_PunktAdresowy', 'PRG_PunktyAdresowe'):
+            if probka is None:
+                probka = etree.tostring(el, encoding='unicode')[:1500]; log('próbka:', probka)
+            if 'kod' in cur and 'pos' in cur:
+                kod = cur['kod']
+                if len(kod) == 5 and kod.isdigit(): kod = kod[:2] + '-' + kod[2:]
+                if len(kod) == 6 and kod[2] == '-':
+                    try:
+                        u, v = float(cur['pos'][0]), float(cur['pos'][1])
+                        a = acc[kod]; a[0] += u; a[1] += v; a[2] += 1
+                        if cur.get('msc'): a[3][cur['msc']] += 1
+                        n += 1
+                    except ValueError: pass
+            cur = {}
+            el.clear()
+            while el.getprevious() is not None: del el.getparent()[0]
+        elif ln == 'featureMember' or ln == 'member':
+            el.clear()
+    log(os.path.basename(p), 'punktów:', n)
+# kolejność osi: sprawdzamy na kodach warszawskich 00-xxx (ok. 52,23 N; 21,01 E)
+t = Transformer.from_crs('EPSG:2180', 'EPSG:4326', always_xy=True)
+war = [v for k, v in acc.items() if k.startswith('00-')][:50]
+def ocen(swap):
+    err = 0
+    for sx, sy, c, _ in war:
+        x, y = (sy / c, sx / c) if swap else (sx / c, sy / c)
+        lon, lat = t.transform(x, y); err += abs(lat - 52.23) + abs(lon - 21.01)
+    return err
+SWAP = ocen(True) < ocen(False)
+log('zamiana osi:', SWAP, ocen(True), ocen(False))
+class TR:
+    def transform(self, a, b):
+        return t.transform(b, a) if SWAP else t.transform(a, b)
+tr_cache = {'x': TR()}
 if not acc: done(False)
 tr = list(tr_cache.values())[0]
 out = collections.defaultdict(dict)

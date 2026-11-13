@@ -19,7 +19,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install pyshp pyproj
+      - run: pip install pyshp pyproj lxml
       - name: Przelicz kody pocztowe
         run: python scripts/kody.py || true
       - name: Zapisz wynik
