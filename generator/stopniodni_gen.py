@@ -93,6 +93,7 @@ def page(slug, title, desc, h1, crumbs, eyebrow, body, faq, lds, cfg):
     extra += f'<script type="application/json" id="sd-cfg">{json.dumps(cfg, ensure_ascii=False)}</script><script>{SDJS}</script>\n'
     out = out[:a] + main + extra + out[b:]
     open(OUT + slug, 'w', encoding='utf-8').write(out)
+    import sys as _s; _s.path.insert(0, SP); import ents; ents.apply(OUT + slug)
     print(slug, len(out), len(re.sub('<[^>]+>', ' ', main).split()), 'słów')
 
 
