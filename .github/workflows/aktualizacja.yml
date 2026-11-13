@@ -19,15 +19,17 @@ jobs:
           python-version: '3.12'
       - name: Pobierz i przelicz dane IMGW-PIB
         run: python scripts/aktualizuj.py
+      - name: Eksport CSV (otwarte dane)
+        run: python scripts/csv_eksport.py
       - name: Zapisz zmiany
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dane/stopniodni
+          git add dane/stopniodni dane/csv
           if git diff --cached --quiet; then
             echo "Brak nowych danych."
           else
             git commit -m "Aktualizacja danych IMGW-PIB $(date +%Y-%m-%d)"
             git push
-            for f in dane/stopniodni/*.json; do curl -s "https://purge.jsdelivr.net/gh/ProfitEnergy/stopniodni@main/$f" > /dev/null || true; done
+            for f in dane/stopniodni/*.json dane/csv/*.csv; do curl -s "https://purge.jsdelivr.net/gh/ProfitEnergy/stopniodni@main/$f" > /dev/null || true; done
           fi

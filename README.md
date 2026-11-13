@@ -36,6 +36,9 @@ użytkową i stałe straty.
 
 - `dane/stopniodni/stacje.json` – lista stacji (współrzędne, data początku serii, liczba uzupełnionych dni) i data ostatniej aktualizacji.
 - `dane/stopniodni/<kod>.json` – temperatury dobowe w dziesiątych częściach °C od daty `od`.
+- `dane/csv/stopniodni_miesieczne.csv` – miesięczne stopniodni grzania dla każdej stacji od 2010 r. (CSV, UTF-8).
+- `dane/csv/stopniodni_sezony.csv` – stopniodni w sezonach grzewczych wrzesień–maj.
+- `dane/csv/stacje.csv` – lista stacji.
 - `dane/miejscowosci/` – miejscowości z Państwowego Rejestru Nazw Geograficznych (GUGiK) ze współrzędnymi.
 - `scripts/aktualizuj.py` – pobranie i przeliczenie danych; uruchamiane automatycznie 8. i 15. dnia miesiąca (GitHub Actions).
 
@@ -48,3 +51,5 @@ Pojedyncze brakujące dni uzupełniane są wartością z najbliższej stacji; st
 Dane IMGW-PIB zostały przetworzone. Dane o miejscowościach: Państwowy Rejestr Nazw Geograficznych, GUGiK.
 
 Kontakt: PROFIT ENERGY Konrad Bojakowski, Warszawa – [energetycznybroker.pl](https://energetycznybroker.pl/), biuro@energetycznybroker.pl, tel. +48 722 149 551.
+
+Licencja opracowania: CC BY 4.0 – przy wykorzystaniu prosimy o podanie źródła „PROFIT ENERGY Konrad Bojakowski (energetycznybroker.pl) na podstawie danych IMGW-PIB”.
