@@ -64,7 +64,7 @@ def page(slug, title, desc, h1, crumbs, eyebrow, body, faq, lds, cfg):
     page_ld = {"@context": "https://schema.org", "@graph": [bc, {"@type": "WebPage", "@id": url + "#strona", "url": url, "name": title, "description": desc, "inLanguage": "pl",
                "dateModified": DATE, "isPartOf": {"@id": BASE + "#witryna"}, "about": {"@id": BASE + "#firma"}}]}
     out = TPL
-    head_old = out[:out.index('<link rel="preconnect"')]
+    head_old = out[:out.index('<link rel="preload" href="fonts/')]
     head_new = f'''<!doctype html>
 <html lang="pl">
 <head>
@@ -74,7 +74,7 @@ def page(slug, title, desc, h1, crumbs, eyebrow, body, faq, lds, cfg):
 <meta name="description" content="{desc}">
 <link rel="canonical" href="{url}">
 <meta name="robots" content="index,follow,max-image-preview:large">
-<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <meta property="og:type" content="article">
 <meta property="og:locale" content="pl_PL">
 <meta property="og:site_name" content="Profit Energy Konrad Bojakowski">
