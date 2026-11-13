@@ -70,16 +70,22 @@ function okresy(typ,S){var end=S.od+S.t.length-1,e=dd(end),Y=e.getUTCFullYear(),
  else if(typ==='s'){for(y=(M>=9?Y:Y-1);y>=2015;y--){if(ms(y,9)>end)continue;var b=Math.min(end,me(y+1,5));L.push({id:'s'+y,y:y,a:ms(y,9),b:b,full:b===me(y+1,5),n:'sezon '+sl(y)+(b<me(y+1,5)?' (do '+pdat(b)+')':' (IX–V)')});}}
  else{for(y=Y;y>=2015;y--){var b2=Math.min(end,me(y,12));if(ms(y,1)>end)continue;L.push({id:'r'+y,y:y,a:ms(y,1),b:b2,full:b2===me(y,12),n:'rok '+y+(b2<me(y,12)?' (do '+pdat(b2)+')':'')});}}
  return L;}
-function wartosc(S,P,A){// P – okres porównawczy; jeśli A niepełny, bierzemy ten sam fragment okresu P
- if(A.full)return sdd(S,P.a,P.b);return sdd(S,P.a,P.a+(A.b-A.a));}
+function dl(o){return o.b-o.a;}
+function dm(n){var d=dd(n);return d.getUTCDate()+'.'+('0'+(d.getUTCMonth()+1)).slice(-2);}
+function bez(n){return n.replace(/ \(.*\)$/,'');}
 function pokazPor(){var box=$('sd-wynik');if(!box||!ST)return;var S=ST.S,typ=$('sd-typ').value,L=okresy(typ,S),A=L.filter(function(o){return o.id===$('sd-a').value;})[0];if(!A)return;
- var tryb=$('sd-b').value,va=sdd(S,A.a,A.b),vb=null,nb='',i,cnt=0,sum=0;
- var idx=L.indexOf(A),prev=L.filter(function(o){return (typ==='m'?(o.m===A.m&&o.y<A.y):o.y<A.y);});
- if(tryb==='rok'){var P=prev[0];if(P){vb=wartosc(S,P,A);nb=P.n.replace(/ \(.*\)$/,'')+(A.full?'':' (ten sam fragment)');}}
- else if(tryb==='s10'||tryb==='s5'){var N=tryb==='s10'?10:5;for(i=0;i<prev.length&&cnt<N;i++){var v=wartosc(S,prev[i],A);if(v!=null){sum+=v;cnt++;}}if(cnt===N){vb=sum/N;nb='średnia '+N+' poprzednich lat ('+prev[N-1].n.replace(/ \(.*\)$/,'').replace(/^(sezon|rok) /,'')+'–'+prev[0].n.replace(/ \(.*\)$/,'').replace(/^(sezon|rok) /,'')+')';}}
- else{var Q=L.filter(function(o){return o.id===tryb;})[0];if(Q){vb=wartosc(S,Q,A);nb=Q.n.replace(/ \(.*\)$/,'')+(A.full?'':' (ten sam fragment)');}}
- var h='<div class="sd-wyn"><div><span>'+cap(A.n)+'</span><b>'+r0(va)+'</b></div><div><span>'+(nb?cap(nb):'porównanie')+'</span><b>'+r0(vb)+'</b></div>';
+ var tryb=$('sd-b').value,vb=null,nb='',i,cnt=0,sum=0,len=dl(A),cut=!A.full;
+ var prev=L.filter(function(o){return (typ==='m'?(o.m===A.m&&o.y<A.y):o.y<A.y);});
+ var Q=null;if(tryb==='rok')Q=prev[0];else if(tryb!=='s10'&&tryb!=='s5')Q=L.filter(function(o){return o.id===tryb;})[0];
+ if(Q&&!Q.full&&dl(Q)<len){len=dl(Q);cut=true;}
+ function v(o){return cut?sdd(S,o.a,o.a+Math.min(len,dl(o))):sdd(S,o.a,o.b);}
+ var va=v(A),zak=cut?' ('+dm(A.a)+'–'+dm(A.a+len)+')':'';
+ if(Q){vb=v(Q);nb=bez(Q.n)+(cut?' ('+dm(Q.a)+'–'+dm(Q.a+len)+')':'');}
+ else if(tryb==='s10'||tryb==='s5'){var N=tryb==='s10'?10:5,used=[];for(i=0;i<prev.length&&cnt<N;i++){var x=v(prev[i]);if(x!=null){sum+=x;cnt++;used.push(prev[i]);}}
+  if(cnt===N){vb=sum/N;nb='średnia '+N+' poprzednich lat ('+bez(used[N-1].n).replace(/^(sezon|rok) /,'')+'–'+bez(used[0].n).replace(/^(sezon|rok) /,'')+')'+(cut?', zawsze '+dm(A.a)+'–'+dm(A.a+len):'');}}
+ var h='<div class="sd-wyn"><div><span>'+cap(bez(A.n))+zak+'</span><b>'+r0(va)+'</b></div><div><span>'+(nb?cap(nb):'porównanie')+'</span><b>'+r0(vb)+'</b></div>';
  if(va!=null&&vb!=null&&vb>0){var p=pct(va,vb);h+='<div class="sd-roz '+(p<0?'cie':'zim')+'"><span>Różnica</span><b>'+sg(p)+'%</b></div></div>';
+  if(cut)h+='<p class="sd-do">Porównuję ten sam fragment okresu w obu latach ('+dm(A.a)+'–'+dm(A.a+len)+'), bo '+(A.full?'okres porównawczy jeszcze trwa':'wybrany okres jeszcze trwa')+'.</p>';
   h+='<p>'+(p===0?'Pogoda w obu okresach była praktycznie taka sama.':(p<0?'Było cieplej':'Było zimniej')+' o '+Math.abs(p)+'%. Przy takiej samej pracy instalacji zużycie ciepła na ogrzewanie powinno być w przybliżeniu o tyle '+(p<0?'niższe':'wyższe')+'. Jeśli faktury pokazują coś innego, budynek zużywa ciepło gorzej lub lepiej niż wynikałoby z pogody.')+'</p>';}
  else h+='</div><p>Brak pełnych danych do tego porównania – wybierz inny okres.</p>';
  box.innerHTML=h;}
