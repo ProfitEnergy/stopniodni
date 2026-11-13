@@ -1,0 +1,4 @@
+pobieram https://opendata.geoportal.gov.pl/prg/adresy/PRG-punkty_adresowe.zip
+rozmiar 806452550
+pliki w zip: 16 ['28_warminsko-mazurskie_13.11.2026_12.11.54.gml', '12_malopolskie_13.11.2026_12.12.30.gml', '08_lubuskie_13.11.2026_12.12.54.gml', '26_swietokrzyskie_13.11.2026_12.13.09.gml', '10_lodzkie_13.11.2026_12.13.36.gml', '22_pomorskie_13.11.2026_12.14.04.gml', '16_opolskie_13.11.2026_12.14.22.gml', '30_wielkopolskie_13.11.2026_12.14.55.gml', '14_mazowieckie_13.11.2026_12.15.58.gml', '04_kujawsko-pomorskie_13.11.2026_12.16.36.gml', '24_slaskie_13.11.2026_12.17.19.gml', '20_podlaskie_13.11.2026_12.17.48.gml', '18_podkarpackie_13.11.2026_12.18.14.gml', '02_dolnoslaskie_13.11.2026_12.18.45.gml', '06_lubelskie_13.11.2026_12.19.17.gml', '32_zachodniopomorskie_13.11.2026_12.19.39.gml']
+shp: 0 []
