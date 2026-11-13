@@ -29,11 +29,18 @@ CSS = '''<style>.sd-sum{list-style:none;padding:0;margin:16px 0;display:grid;gap
 .sd-wyn{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:16px 0 8px}.sd-wyn div{border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:4px}.sd-wyn span{font-size:.85rem;color:var(--muted)}.sd-wyn b{font-size:1.6rem;line-height:1.1}
 .sd-roz.cie{background:#E8F4EC;border-color:#BFDCC8}.sd-roz.zim{background:#FDECEC;border-color:#F2C4C4}#sd-tabele h3{margin-top:18px}#sd-tabele2 h4{margin-top:22px}.sd-avg th,.sd-avg td{font-weight:700;background:var(--soft)}
 @media(max-width:560px){.sd-lok{grid-template-columns:1fr}}
-.sd-kalk{display:grid;grid-template-columns:1fr auto;gap:18px 28px;align-items:center;margin:22px 0 8px;padding:24px 26px;border-radius:var(--r);background:var(--soft);border:2px solid var(--volt)}.sd-kalk h2{margin:0 0 8px;font-size:1.45rem}.sd-kalk p{margin:0}.sd-kalk ul{margin:10px 0 0;padding-left:20px}.sd-kalk li{margin:3px 0}.sd-kalk .btn{white-space:nowrap}@media(max-width:700px){.sd-kalk{grid-template-columns:1fr;padding:20px}.sd-kalk .btn{justify-self:start;white-space:normal}}
+.sd-top{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:18px;align-items:stretch;margin:8px 0 10px}.sd-top .tldr{margin:0}.sd-kc{display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:14px;background:var(--card,#fff);border:2px solid var(--volt);box-shadow:0 10px 28px rgba(0,0,0,.08)}.sd-kc small{font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}.sd-kc strong{font-size:1.2rem;line-height:1.25}.sd-kc p{margin:0;font-size:.92rem;line-height:1.45}.sd-kc .btn{margin-top:auto;width:100%;padding:15px 16px;font-size:1.05rem;font-weight:700}@media(max-width:720px){.sd-top{grid-template-columns:1fr}}
 </style>'''
 
 
 def page(slug, title, desc, h1, crumbs, eyebrow, body, faq, lds, cfg):
+    kh = 'kalkulator-kosztow-ogrzewania.html' + ('?msc=Warszawa' if cfg.get('typ') == 'miasto' else '')
+    kc = ('<aside class="sd-kc" aria-label="Kalkulator kosztów ogrzewania"><small>Kalkulator kosztów ogrzewania</small>'
+          '<strong>Czy Twój budynek zużywa za dużo ciepła?</strong>'
+          '<p>Wgraj faktury za ciepło w PDF. Kalkulator przeliczy zużycie przez stopniodni z najbliższej stacji IMGW i pokaże potencjał oszczędności.</p>'
+          f'<a class="btn primary" href="{kh}">Sprawdź swoje faktury →</a></aside>')
+    body = re.sub(r'^(<div class="tldr">.*?</div>)', lambda m: '<div class="sd-top">' + m.group(1) + kc + '</div>', body, count=1, flags=re.S)
+    assert 'sd-top' in body
     url = BASE + slug
     faq_html = '<h2>Najczęstsze pytania</h2><div class="faq">' + ''.join(
         f'<details{" open" if i == 0 else ""}><summary>{html.escape(q)}</summary><p class="a">{html.escape(a)}</p></details>' for i, (q, a) in enumerate(faq)) + '</div>'
@@ -120,9 +127,6 @@ TITLE = 'Stopniodni w Polsce – aktualne dane IMGW, raport miesięczny'
 DESC = f'Liczba stopniodni grzania dla 19 miast i 54 stacji IMGW: ostatni miesiąc, bieżący sezon i 10 sezonów wstecz. Wzór, metoda Eurostat, dane co miesiąc.'
 SLUG = 'stopniodni.html'; URL = BASE + SLUG
 body = f'''<div class="tldr"><b>W skrócie</b><strong>Stopniodni (liczba stopniodni grzania)</strong> mówią, jak zimny był dany okres i ile ciepła potrzebował budynek do ogrzania. Dla każdego dnia liczy się różnicę 18°C minus średnia temperatura dobowa – tylko w dniach chłodniejszych niż 15°C – i sumuje za miesiąc lub sezon. Ta strona pokazuje aktualne stopniodni dla 19 miast i 54 stacji IMGW-PIB, przeliczane co miesiąc. {LM.capitalize()} – średnio w 19 miastach: <strong>{r0(AP["lv"])}</strong> stopniodni wobec {r0(AP["ly0"])} w {MIES_L[Iw["lm"] - 1]} {Iw["ly"] - 1}; w Warszawie {r0(Iw["lv"])} wobec {r0(Iw["ly0"])}.</div>
-<div class="sd-kalk"><div><h2>Kalkulator kosztów ogrzewania – sprawdź faktury swojego budynku</h2><p>Stopniodni pokazują, jaka była pogoda. Kalkulator pokazuje, ile ciepła zużył Twój budynek przy tej pogodzie. Wgraj faktury za ciepło w PDF – kalkulator sam je odczyta i przeliczy przez stopniodni z najbliższej stacji IMGW.</p>
-<ul><li>roczne zużycie i koszt ciepła z faktur</li><li>zużycie po korekcie pogodowej – sezon do sezonu, uczciwie</li><li>szacunek potencjału oszczędności dla Twojego budynku</li></ul></div>
-<a class="btn primary" href="kalkulator-kosztow-ogrzewania.html">Otwórz kalkulator</a></div>
 <h2>Stopniodni w Polsce – najnowsze dane</h2>
 <p>Polska – średnia z 19 miast z tabeli poniżej (stacje IMGW-PIB):</p>
 <div id="sd-sum">{html_sum(AP)}</div>
@@ -194,9 +198,6 @@ maz_tab = f'<table><thead><tr><th scope="col">Miejscowość</th><th scope="col">
 lata = html_lata(Sw, Iw)
 v2025 = r0(sdd(Sw, mstart(2025, 1), mend(2025, 12)))
 body = f'''<div class="tldr"><b>W skrócie</b><span id="sd-tldr">{html_tldr(Iw, "w Warszawie", "Warszawa-Okęcie")}</span> Stopniodni liczę metodą Eurostatu (18°C, dni poniżej 15°C) z dobowych temperatur IMGW-PIB; dane dopisują się co miesiąc.</div>
-<div class="sd-kalk"><div><h2>Kalkulator kosztów ogrzewania – sprawdź faktury budynku w Warszawie</h2><p>Stopniodni pokazują, jaka była pogoda. Kalkulator pokazuje, ile ciepła zużył Twój budynek przy tej pogodzie. Wgraj faktury za ciepło w PDF – kalkulator sam je odczyta i przeliczy przez stopniodni z najbliższej stacji IMGW.</p>
-<ul><li>roczne zużycie i koszt ciepła z faktur</li><li>zużycie po korekcie pogodowej – sezon do sezonu, uczciwie</li><li>szacunek potencjału oszczędności dla Twojego budynku</li></ul></div>
-<a class="btn primary" href="kalkulator-kosztow-ogrzewania.html?msc=Warszawa">Otwórz kalkulator</a></div>
 <h2>Stopniodni w Warszawie – najnowsze dane</h2>
 <div id="sd-sum">{html_sum(Iw)}</div>
 <h2>Porównaj okresy – Warszawa</h2>
