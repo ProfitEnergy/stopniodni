@@ -90,7 +90,7 @@ def page(slug, title, desc, h1, crumbs, eyebrow, body, faq, lds, cfg):
 
 def dataset(url, name, desc, place, sid=None):
     d = {"@context": "https://schema.org", "@type": "Dataset", "name": name, "description": desc, "url": url, "inLanguage": "pl",
-         "creator": {"@id": BASE + "#firma"}, "isBasedOn": "https://danepubliczne.imgw.pl/", "temporalCoverage": f"2016-01-01/{DANE_DO}",
+         "creator": {"@id": BASE + "#firma"}, "isBasedOn": "https://danepubliczne.imgw.pl/", "temporalCoverage": f"2010-01-01/{DANE_DO}",
          "spatialCoverage": {"@type": "Place", "name": place}, "dateModified": META['aktualizacja'], "isAccessibleForFree": True,
          "variableMeasured": "stopniodni grzania (HDD), baza 18°C, próg 15°C", "measurementTechnique": "Eurostat: suma (18°C − średnia temperatura dobowa) dla dni ze średnią poniżej 15°C",
          "creditText": "Źródłem pochodzenia danych jest Instytut Meteorologii i Gospodarki Wodnej – Państwowy Instytut Badawczy. Dane IMGW-PIB zostały przetworzone.",
@@ -176,7 +176,7 @@ FAQ = [
     ('Do czego zarządcy budynków używają stopniodni?', 'Do porównywania zużycia ciepła między sezonami niezależnie od pogody, do weryfikacji efektów termomodernizacji lub sterowania ogrzewaniem oraz do rozliczeń w modelu ESCO, w którym wynagrodzenie zależy od zmierzonej oszczędności.'),
 ]
 page(SLUG, TITLE, DESC, H1, [('Strona główna', './'), ('Poradniki', 'poradniki.html')], 'Dane IMGW · co miesiąc', body, FAQ,
-     [dataset(URL + '#miasta', 'Stopniodni grzania dla stacji synoptycznych IMGW-PIB w Polsce', 'Miesięczne i sezonowe sumy stopniodni grzania (baza 18°C, próg 15°C) dla 54 stacji synoptycznych IMGW-PIB, od 2016 r., aktualizowane co miesiąc.', 'Polska'),
+     [dataset(URL + '#miasta', 'Stopniodni grzania dla stacji synoptycznych IMGW-PIB w Polsce', 'Miesięczne i sezonowe sumy stopniodni grzania (baza 18°C, próg 15°C) dla stacji synoptycznych IMGW-PIB, od 2010 r., aktualizowane co miesiąc.', 'Polska'),
       art(URL, H1, DESC, ['stopniodni', 'liczba stopniodni', 'stopniodni grzania', 'wzór na stopniodni', 'sezon grzewczy', 'IMGW-PIB', 'korekta pogodowa zużycia ciepła'])],
      {'typ': 'hub', 'dane_do': DANE_DO, 'miasta': [{'n': n, 'st': sid, 'slug': slug} for n, sid, slug in MIASTA]})
 
@@ -239,6 +239,6 @@ FAQ = [
     ('Jak często aktualizowane są stopniodni dla Warszawy?', 'Co miesiąc, automatycznie po publikacji danych dobowych przez IMGW-PIB.'),
 ]
 page(SLUG, TITLE, DESC, H1, [('Strona główna', './'), ('Poradniki', 'poradniki.html'), ('Stopniodni', 'stopniodni.html')], 'Dane IMGW · Warszawa', body, FAQ,
-     [dataset(URL + '#sd-sez', 'Stopniodni grzania – Warszawa (stacja IMGW Warszawa-Okęcie)', 'Miesięczne, sezonowe i roczne sumy stopniodni grzania dla Warszawy (baza 18°C, próg 15°C), od 2016 r., aktualizowane co miesiąc.', 'Warszawa', '352200375'),
+     [dataset(URL + '#sd-sez', 'Stopniodni grzania – Warszawa (stacja IMGW Warszawa-Okęcie)', 'Miesięczne, sezonowe i roczne sumy stopniodni grzania dla Warszawy (baza 18°C, próg 15°C), od 2010 r., aktualizowane co miesiąc.', 'Warszawa', '352200375'),
       art(URL, H1, DESC, ['stopniodni Warszawa', 'liczba stopniodni Warszawa', 'sezon grzewczy Warszawa', 'IMGW-PIB', 'Warszawa-Okęcie'])],
      {'typ': 'miasto', 'dane_do': DANE_DO, 'st': '352200375', 'mw': 'w Warszawie', 'stn': 'Warszawa-Okęcie', 'start': [52.2297, 21.0122, 'Warszawa']})

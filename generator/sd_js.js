@@ -66,9 +66,9 @@ var cfg=$('sd-cfg');if(!cfg)return;var C=JSON.parse(cfg.textContent);
 
 // ---------- porównywarka okresów ----------
 function okresy(typ,S){var end=S.od+S.t.length-1,e=dd(end),Y=e.getUTCFullYear(),M=e.getUTCMonth()+1,L=[],y,m;
- if(typ==='m'){for(y=Y;y>=2016;y--)for(m=12;m>=1;m--){if(me(y,m)>end)continue;L.push({id:y+'-'+m,y:y,m:m,a:ms(y,m),b:me(y,m),full:true,n:MIES[m-1]+' '+y});}}
- else if(typ==='s'){for(y=(M>=9?Y:Y-1);y>=2015;y--){if(ms(y,9)>end)continue;var b=Math.min(end,me(y+1,5));L.push({id:'s'+y,y:y,a:ms(y,9),b:b,full:b===me(y+1,5),n:'sezon '+sl(y)+(b<me(y+1,5)?' (do '+pdat(b)+')':' (IX–V)')});}}
- else{for(y=Y;y>=2015;y--){var b2=Math.min(end,me(y,12));if(ms(y,1)>end)continue;L.push({id:'r'+y,y:y,a:ms(y,1),b:b2,full:b2===me(y,12),n:'rok '+y+(b2<me(y,12)?' (do '+pdat(b2)+')':'')});}}
+ if(typ==='m'){for(y=Y;y>=2010;y--)for(m=12;m>=1;m--){if(me(y,m)>end)continue;L.push({id:y+'-'+m,y:y,m:m,a:ms(y,m),b:me(y,m),full:true,n:MIES[m-1]+' '+y});}}
+ else if(typ==='s'){for(y=(M>=9?Y:Y-1);y>=2010;y--){if(ms(y,9)>end)continue;var b=Math.min(end,me(y+1,5));L.push({id:'s'+y,y:y,a:ms(y,9),b:b,full:b===me(y+1,5),n:'sezon '+sl(y)+(b<me(y+1,5)?' (do '+pdat(b)+')':' (IX–V)')});}}
+ else{for(y=Y;y>=2010;y--){var b2=Math.min(end,me(y,12));if(ms(y,1)>end)continue;L.push({id:'r'+y,y:y,a:ms(y,1),b:b2,full:b2===me(y,12),n:'rok '+y+(b2<me(y,12)?' (do '+pdat(b2)+')':'')});}}
  return L;}
 function dl(o){return o.b-o.a;}
 function dm(n){var d=dd(n);return d.getUTCDate()+'.'+('0'+(d.getUTCMonth()+1)).slice(-2);}
