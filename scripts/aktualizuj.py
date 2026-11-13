@@ -20,7 +20,7 @@ import urllib.request
 import zipfile
 
 BASE = 'https://danepubliczne.imgw.pl/data/dane_pomiarowo_obserwacyjne/dane_meteorologiczne/dobowe/synop/'
-START = dt.date(2015, 1, 1)
+START = dt.date(2010, 1, 1)  # 10 lat wstecz także dla porównań od 2020 r.
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, 'dane', 'stopniodni')
 COORDS = json.load(open(os.path.join(ROOT, 'scripts', 'stacje_wspolrzedne.json'), encoding='utf-8'))
@@ -46,12 +46,18 @@ def get(url, tries=4):
 def zip_urls():
     urls = []
     today = dt.date.today()
-    for y in range(START.year, today.year):
-        html = get(BASE + f'{y}/')
+    # katalogi roczne (np. 2015/) i wieloletnie (np. 2006_2010/)
+    idx = get(BASE) or b''
+    dirs = sorted(set(re.findall(r'href="(\d{4}(?:_\d{4})?)/"', idx.decode('utf-8', 'replace'))))
+    for d in dirs:
+        a = int(d[:4]); b = int(d[-4:])
+        if b < START.year or a >= today.year:
+            continue
+        html = get(BASE + f'{d}/')
         if html is None:
             continue
         for m in re.findall(r'href="([^"]+\.zip)"', html.decode('utf-8', 'replace')):
-            urls.append(BASE + f'{y}/' + m)
+            urls.append(BASE + f'{d}/' + m)
     # rok bieżący: pliki miesięczne ze wszystkich stacji
     html = get(BASE + f'{today.year}/')
     if html:
