@@ -1,0 +1,33 @@
+name: Kody pocztowe z PRG GUGiK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/kody.py'
+      - '.github/workflows/kody.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  kody:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pyshp pyproj
+      - name: Przelicz kody pocztowe
+        run: python scripts/kody.py || true
+      - name: Zapisz wynik
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dane/kody
+          if git diff --cached --quiet; then echo "Bez zmian."; else
+            git commit -m "Kody pocztowe z PRG GUGiK $(date +%Y-%m-%d)"; git pull --rebase; git push
+            for f in dane/kody/*.json; do curl -s "https://purge.jsdelivr.net/gh/ProfitEnergy/stopniodni@main/$f" > /dev/null || true; done
+          fi
