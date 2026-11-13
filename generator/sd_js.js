@@ -29,15 +29,17 @@ function info(S){var end=S.od+S.t.length-1,e=dd(end),Y=e.getUTCFullYear(),M=e.ge
  if(ps!==null){var a=ms(ps,9),b=Math.min(end,me(ps+1,5)),off=b-a,pa=0;I.pv=sdd(S,a,b);base.forEach(function(y){pa+=sdd(S,ms(y,9),ms(y,9)+off);});I.pa=pa/10;I.pp=pct(I.pv,I.pa);I.pb=b;
   I.pv0=sdd(S,ms(ps-1,9),ms(ps-1,9)+off);I.ppy=pct(I.pv,I.pv0);}
  return I;}
-function htmlSum(I){var o='<ul class="sd-sum">';
- o+='<li><b>'+cap(MIES[I.lm-1])+' '+I.ly+':</b> '+r0(I.lv)+' stopniodni – '+ryr(I.lpy,'w '+MIES_L[I.lm-1]+' '+(I.ly-1),r0(I.ly0))+'.</li>';
- if(I.ps!==null)o+='<li><b>Sezon grzewczy '+sl(I.ps)+' od 1 września do '+pdat(I.pb)+':</b> '+r0(I.pv)+' stopniodni – '+ryr(I.ppy,'w tym samym okresie sezonu '+sl(I.ps-1),r0(I.pv0))+'.</li>';
- else{var lcv=I.sez[I.lc],pr=I.sez[I.lc-1];o+='<li><b>Sezon grzewczy '+sl(I.lc)+' (wrzesień–maj):</b> '+r0(lcv)+' stopniodni – '+ryr(pct(lcv,pr),'w sezonie '+sl(I.lc-1),r0(pr))+'.</li>';}
+var SEZ_OD=2020;
+function htmlSum(I){var lm=I.lm,ly=I.ly,o='<ul class="sd-sum">';
+ o+='<li><b>'+cap(MIES[lm-1])+' '+ly+':</b> '+r0(I.lv)+' stopniodni – '+ryr(I.lpy,'w '+MIES_L[lm-1]+' '+(ly-1),r0(I.ly0))+'. Średnia '+MIES_D[lm-1]+' z lat '+(ly-10)+'–'+(ly-1)+': '+r0(I.la)+' ('+sg(I.lp)+'%).</li>';
+ if(I.ps!==null)o+='<li><b>Sezon grzewczy '+sl(I.ps)+' od 1 września do '+pdat(I.pb)+':</b> '+r0(I.pv)+' stopniodni – '+ryr(I.ppy,'w tym samym okresie sezonu '+sl(I.ps-1),r0(I.pv0))+'. Średnia tego okresu z 10 sezonów ('+sl(I.base[0])+'–'+sl(I.lc)+'): '+r0(I.pa)+' ('+sg(I.pp)+'%).</li>';
+ else{var lcv=I.sez[I.lc],pr=I.sez[I.lc-1];o+='<li><b>Sezon grzewczy '+sl(I.lc)+' (wrzesień–maj):</b> '+r0(lcv)+' stopniodni – '+ryr(pct(lcv,pr),'w sezonie '+sl(I.lc-1),r0(pr))+'. Średnia 10 sezonów ('+sl(I.base[0])+'–'+sl(I.lc)+'): '+r0(I.avg_s)+' ('+sg(pct(lcv,I.avg_s))+'%).</li>';}
  return o+'</ul>';}
+function fr(I){var d=dd(I.pb);return '1.09–'+d.getUTCDate()+'.'+('0'+(d.getUTCMonth()+1)).slice(-2);}
 function htmlSez(S,I){var o='<table><thead><tr><th scope="col">Sezon grzewczy</th><th scope="col">Stopniodni IX–V</th><th scope="col">Zmiana do poprzedniego sezonu</th></tr></thead><tbody>';
- if(I.ps!==null)o+='<tr><th scope="row">'+sl(I.ps)+' (do '+pdat(I.pb)+')</th><td>'+r0(I.pv)+'</td><td>'+sg(I.ppy)+'% wobec tego samego okresu '+sl(I.ps-1)+'</td></tr>';
- I.base.slice().reverse().forEach(function(y){o+='<tr><th scope="row">'+sl(y)+'</th><td>'+r0(I.sez[y])+'</td><td>'+sg(pct(I.sez[y],I.sez[y-1]))+'%</td></tr>';});
- o+='<tr><th scope="row">Średnia '+sl(I.base[0])+'–'+sl(I.lc)+'</th><td><b>'+r0(I.avg_s)+'</b></td><td>–</td></tr>';
+ if(I.ps!==null)o+='<tr><th scope="row">'+sl(I.ps)+' – trwa ('+fr(I)+')</th><td>'+r0(I.pv)+'</td><td>'+sg(I.ppy)+'% wobec '+fr(I)+' sezonu '+sl(I.ps-1)+'</td></tr>';
+ for(var y=I.lc;y>=SEZ_OD;y--)o+='<tr><th scope="row">'+sl(y)+'</th><td>'+r0(I.sez[y])+'</td><td>'+sg(pct(I.sez[y],I.sez[y-1]))+'%</td></tr>';
+ o+='<tr><th scope="row">Średnia 10 sezonów '+sl(I.base[0])+'–'+sl(I.lc)+'</th><td><b>'+r0(I.avg_s)+'</b></td><td>–</td></tr>';
  return o+'</tbody></table>';}
 function htmlMies(S,I){var cols=[],y;for(y=I.lc-4;y<=I.lc;y++)cols.push(y);if(I.ps!==null)cols.push(I.ps);
  var o='<table><thead><tr><th scope="col">Miesiąc</th>'+cols.map(function(y){return '<th scope="col">'+sl(y)+'</th>';}).join('')+'<th scope="col">Średnia '+sl(I.base[0])+'–'+sl(I.lc)+'</th></tr></thead><tbody>';
@@ -48,11 +50,16 @@ function htmlMies(S,I){var cols=[],y;for(y=I.lc-4;y<=I.lc;y++)cols.push(y);if(I.
 function htmlLata(S,I){var Y=dd(I.end).getUTCFullYear(),out=[];for(var y=Y-10;y<Y;y++){var v=sdd(S,ms(y,1),me(y,12));if(v!=null)out.push(y+' – '+r0(v));}return out.join(', ');}
 function htmlTldr(I,mw,st){var t=cap(MIES[I.lm-1])+' '+I.ly+' '+mw+' (stacja IMGW '+st+'): '+r0(I.lv)+' stopniodni, '+ryr(I.lpy,'w '+MIES_L[I.lm-1]+' '+(I.ly-1),r0(I.ly0))+'.';
  if(I.ps!==null)t+=' Sezon grzewczy '+sl(I.ps)+' do '+pdat(I.pb)+': '+r0(I.pv)+' stopniodni wobec '+r0(I.pv0)+' w tym samym okresie sezonu '+sl(I.ps-1)+'.';return t;}
-function hubRow(c,I){var s='<tr><th scope="row">'+(c.slug?'<a href="stopniodni-'+c.slug+'.html">'+c.n+'</a>':c.n)+'</th><td>'+r0(I.lv)+'</td><td>'+r0(I.la)+'</td><td>'+sg(I.lp)+'%</td>';
- if(I.ps!==null)s+='<td>'+r0(I.pv)+'</td><td>'+r0(I.pa)+'</td><td>'+sg(I.pp)+'%</td>';
- else{var lcv=I.sez[I.lc];s+='<td>'+r0(lcv)+'</td><td>'+r0(I.avg_s)+'</td><td>'+sg(pct(lcv,I.avg_s))+'%</td>';}return s+'</tr>';}
-function hubHead(I){var sez,sav;if(I.ps!==null){var d=dd(I.pb),ds=d.getUTCDate()+'.'+('0'+(d.getUTCMonth()+1)).slice(-2);sez='Sezon '+sl(I.ps)+' (1.09–'+ds+')';sav='Średnia 1.09–'+ds+' z 10 sezonów';}else{sez='Sezon '+sl(I.lc);sav='Średnia 10 sezonów';}
- return '<table><thead><tr><th scope="col">Miasto</th><th scope="col">'+cap(MIES[I.lm-1])+' '+I.ly+'</th><th scope="col">Średnia '+(I.ly-10)+'–'+(I.ly-1)+'</th><th scope="col">Różnica</th><th scope="col">'+sez+'</th><th scope="col">'+sav+'</th><th scope="col">Różnica</th></tr></thead><tbody>';}
+function hubRow(c,I){var s='<tr><th scope="row">'+(c.slug?'<a href="stopniodni-'+c.slug+'.html">'+c.n+'</a>':c.n)+'</th><td>'+r0(I.lv)+'</td><td>'+r0(I.ly0)+'</td><td>'+sg(I.lpy)+'%</td>';
+ if(I.ps!==null)s+='<td>'+r0(I.pv)+'</td><td>'+r0(I.pv0)+'</td><td>'+sg(I.ppy)+'%</td>';
+ else{var lcv=I.sez[I.lc],pr=I.sez[I.lc-1];s+='<td>'+r0(lcv)+'</td><td>'+r0(pr)+'</td><td>'+sg(pct(lcv,pr))+'%</td>';}return s+'</tr>';}
+function agg(Is){var n=Is.length,I0=Is[0],A={end:I0.end,ly:I0.ly,lm:I0.lm,ps:I0.ps,lc:I0.lc,base:I0.base},ks=['lv','ly0','la'];if(I0.ps!==null)ks=ks.concat(['pv','pv0','pa']);
+ ks.forEach(function(k){var t=0;Is.forEach(function(I){t+=I[k];});A[k]=t/n;});if(I0.ps!==null)A.pb=I0.pb;
+ A.sez={};Object.keys(I0.sez).forEach(function(y){var t=0;Is.forEach(function(I){t+=I.sez[y];});A.sez[y]=t/n;});var t2=0;Is.forEach(function(I){t2+=I.avg_s;});A.avg_s=t2/n;
+ A.lp=pct(A.lv,A.la);A.lpy=pct(A.lv,A.ly0);if(I0.ps!==null){A.pp=pct(A.pv,A.pa);A.ppy=pct(A.pv,A.pv0);}return A;}
+function hubHead(I){var lm=I.lm,ly=I.ly,sez,sav;if(I.ps!==null){sez='Sezon '+sl(I.ps)+' ('+fr(I)+')';sav=sl(I.ps-1)+' ('+fr(I)+')';}else{sez='Sezon '+sl(I.lc);sav='Sezon '+sl(I.lc-1);}
+ return '<table><thead><tr><th scope="col">Miasto</th><th scope="col">'+cap(MIES[lm-1])+' '+ly+'</th><th scope="col">'+cap(MIES[lm-1])+' '+(ly-1)+'</th><th scope="col">Zmiana</th><th scope="col">'+sez+'</th><th scope="col">'+sav+'</th><th scope="col">Zmiana</th></tr></thead><tbody>';}
+function hubAvg(A){return '<tr class="sd-avg">'+hubRow({n:'Polska – średnia 19 miast'},A).slice(4);}
 function set(id,h,txt){var e=$(id);if(!e)return;if(txt)e.textContent=h;else e.innerHTML=h;}
 function ser(d){return {od:dn(d.od),t:d.t};}
 var cfg=$('sd-cfg');if(!cfg)return;var C=JSON.parse(cfg.textContent);
@@ -77,8 +84,8 @@ function pokazPor(){var box=$('sd-wynik');if(!box||!ST)return;var S=ST.S,typ=$('
  else h+='</div><p>Brak pełnych danych do tego porównania – wybierz inny okres.</p>';
  box.innerHTML=h;}
 function wypelnij(){if(!ST)return;var S=ST.S,typ=$('sd-typ').value,L=okresy(typ,S),a=$('sd-a'),b=$('sd-b'),stary=a.value;
- a.innerHTML=L.map(function(o){return '<option value="'+o.id+'">'+cap(o.n)+'</option>';}).join('');if(L.some(function(o){return o.id===stary;}))a.value=stary;
- var bo='<option value="rok">'+(typ==='m'?'rok wcześniej':typ==='s'?'poprzedni sezon':'poprzedni rok')+'</option><option value="s10">średnia 10 poprzednich lat</option><option value="s5">średnia 5 poprzednich lat</option><optgroup label="wybrany okres">'+L.map(function(o){return '<option value="'+o.id+'">'+cap(o.n)+'</option>';}).join('')+'</optgroup>';
+ var LW=L.filter(function(o){return o.y>=SEZ_OD;});a.innerHTML=LW.map(function(o){return '<option value="'+o.id+'">'+cap(o.n)+'</option>';}).join('');if(L.some(function(o){return o.id===stary;}))a.value=stary;
+ var bo='<option value="rok">'+(typ==='m'?'rok wcześniej':typ==='s'?'poprzedni sezon':'poprzedni rok')+'</option><option value="s10">średnia 10 poprzednich lat</option><option value="s5">średnia 5 poprzednich lat</option><optgroup label="wybrany okres">'+LW.map(function(o){return '<option value="'+o.id+'">'+cap(o.n)+'</option>';}).join('')+'</optgroup>';
  var sb=b.value;b.innerHTML=bo;if([].some.call(b.options,function(o){return o.value===sb;}))b.value=sb;pokazPor();}
 var ST=null,META=null,WOJ=null,cacheL={},cacheK={};
 function km(a,b,c,d){var r=Math.PI/180,x=Math.sin((c-a)*r/2),y=Math.sin((d-b)*r/2);return 12742*Math.asin(Math.sqrt(x*x+Math.cos(a*r)*Math.cos(c*r)*y*y));}
@@ -86,7 +93,9 @@ function norm(s){return s.toLowerCase().replace(/ł/g,'l').normalize('NFD').repl
 function ustawStacje(lat,lon,opis){if(!META)return;var best=null;META.stacje.forEach(function(s){var d=km(lat,lon,s.lat,s.lon);if(!best||d<best.d)best={s:s,d:d};});
  set('sd-stacja','Stacja IMGW '+best.s.n+' – ok. '+Math.round(best.d)+' km od: '+opis+'.'+(best.d>60?' Stacja jest daleko – wynik orientacyjny.':''),true);
  getJSON('stopniodni/'+best.s.id+'.json').then(function(d){ST={s:best.s,S:ser(d)};var I=info(ST.S);
-  var t=$('sd-tabele');if(t){t.innerHTML='<details><summary>Tabele dla stacji '+best.s.n+': sezony i miesiące</summary><h4>Sezony grzewcze</h4><div class="tbl">'+htmlSez(ST.S,I)+'</div><h4>Miesiące sezonu grzewczego</h4><div class="tbl">'+htmlMies(ST.S,I)+'</div><p>Lata kalendarzowe: '+htmlLata(ST.S,I)+' stopniodni.</p></details>';}
+  var t=$('sd-tabele'),t2=$('sd-tabele2');if(t&&t2){if(C.typ==='miasto'&&best.s.id===C.st){t.innerHTML='';t2.innerHTML='';}else{var nm=opis.replace(/ \(.*$/,'');
+   t.innerHTML='<h3>Stopniodni – '+nm+' (stacja IMGW '+best.s.n+') – najnowsze dane</h3>'+htmlSum(I)+'<h4>Porównaj dowolne okresy – stacja '+best.s.n+'</h4>';
+   t2.innerHTML='<h4>Sezony grzewcze – stacja '+best.s.n+'</h4><p class="sd-do">Suma od września do maja. Zmiana: plus – zimniej, minus – cieplej niż w poprzednim sezonie.</p><div class="tbl">'+htmlSez(ST.S,I)+'</div><h4>Miesiące sezonu grzewczego – stacja '+best.s.n+'</h4><div class="tbl">'+htmlMies(ST.S,I)+'</div><p>Lata kalendarzowe (styczeń–grudzień), stacja '+best.s.n+': '+htmlLata(ST.S,I)+' stopniodni.</p>';}}
   $('sd-por').hidden=false;wypelnij();});}
 function wojZKodu(k){var n=parseInt(k.slice(0,2),10);if(isNaN(n))return -1;var t=[[0,9,6],[10,14,13],[15,19,9],[20,24,2],[25,29,12],[30,34,5],[35,39,8],[40,44,11],[45,49,7],[50,59,0],[60,64,14],[65,69,3],[70,78,15],[80,84,10],[85,89,1],[90,99,4]];for(var i=0;i<t.length;i++)if(n>=t[i][0]&&n<=t[i][1])return t[i][2];return -1;}
 function initSzukaj(){var inp=$('sd-msc'),kod=$('sd-kod'),list=$('sd-lista');if(!inp)return;
@@ -99,15 +108,15 @@ function initSzukaj(){var inp=$('sd-msc'),kod=$('sd-kod'),list=$('sd-lista');if(
  inp.addEventListener('blur',function(){setTimeout(function(){list.hidden=true;},150);});
  inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();kand(inp.value,function(r){if(r.length){inp.value=r[0][0];list.hidden=true;ustawStacje(r[0][4],r[0][5],opis(r[0]));}});}});
  kod.addEventListener('input',function(){var v=kod.value.replace(/\D/g,'');if(v.length>2&&kod.value.indexOf('-')<0){kod.value=v.slice(0,2)+'-'+v.slice(2,5);}
-  if(v.length===5){var k=v.slice(0,2)+'-'+v.slice(2),c=v[0];var go=function(m){var r=m&&m[k];if(r){if(!inp.value)inp.value=r[2];ustawStacje(r[0],r[1],'kod '+k+(r[2]?' ('+r[2]+')':''));}else if(!ST)set('sd-stacja','Nie znam kodu '+k+' – wpisz miejscowość.',true);};
+  if(v.length===5){var k=v.slice(0,2)+'-'+v.slice(2),c=v[0];var go=function(m){var r=m&&m[k];if(r){if(!inp.value)inp.value=r[2];ustawStacje(r[0],r[1],(inp.value?inp.value+', ':'')+'kod '+k);}else if(!ST)set('sd-stacja','Nie znam kodu '+k+' – wpisz miejscowość.',true);};
    if(cacheK[c]!==undefined)go(cacheK[c]);else getJSON('kody/'+c+'.json').then(function(m){cacheK[c]=m;go(m);}).catch(function(){cacheK[c]=null;if(!ST)set('sd-stacja','Po samym kodzie nie znalazłem miejscowości – wpisz też jej nazwę.',true);});}});}
 ['sd-typ','sd-a','sd-b'].forEach(function(id){var e=$(id);if(e)e.addEventListener('change',id==='sd-typ'?wypelnij:pokazPor);});
-window.SD={info:info,htmlSum:htmlSum,htmlSez:htmlSez,htmlMies:htmlMies,htmlLata:htmlLata,htmlTldr:htmlTldr,hubRow:hubRow,hubHead:hubHead,ser:ser,getJSON:getJSON,okresy:okresy,C:C};
+window.SD={agg:agg,hubAvg:hubAvg,info:info,htmlSum:htmlSum,htmlSez:htmlSez,htmlMies:htmlMies,htmlLata:htmlLata,htmlTldr:htmlTldr,hubRow:hubRow,hubHead:hubHead,ser:ser,getJSON:getJSON,okresy:okresy,C:C};
 function odswiez(){
  if(C.typ==='miasto'){getJSON('stopniodni/'+C.st+'.json').then(function(d){var S=ser(d),I=info(S);
    set('sd-tldr',htmlTldr(I,C.mw,C.stn),true);set('sd-sum',htmlSum(I));set('sd-sez',htmlSez(S,I));set('sd-mies',htmlMies(S,I));set('sd-lata',htmlLata(S,I),true);});}
  else{Promise.all(C.miasta.map(function(c){return getJSON('stopniodni/'+c.st+'.json').then(function(d){return {c:c,S:ser(d)};});})).then(function(L){var I0=info(L[0].S);
-   var h=hubHead(I0);L.forEach(function(x){h+=hubRow(x.c,info(x.S));});set('sd-tab',h+'</tbody></table>');set('sd-sum',htmlSum(I0));});}}
+   var Is=L.map(function(x){return info(x.S);}),A=agg(Is);var h=hubHead(I0);L.forEach(function(x,i){h+=hubRow(x.c,Is[i]);});set('sd-tab',h+hubAvg(A)+'</tbody></table>');set('sd-sum',htmlSum(A));});}}
 getJSON('miejscowosci/woj.json').then(function(w){WOJ=w;}).catch(function(){});
 getJSON('stopniodni/stacje.json').then(function(m){META=m;var e=$('sd-do');if(m.dane_do>C.dane_do||C.force){odswiez();if(e)e.textContent=pdat(dn(m.dane_do));}
  initSzukaj();if(C.start)ustawStacje(C.start[0],C.start[1],C.start[2]);}).catch(function(){});

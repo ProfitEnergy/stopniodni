@@ -76,25 +76,32 @@ def ryr(p, ref, val):
     return f'o {abs(p)}% ' + ('mniej' if p < 0 else 'więcej') + f' niż {ref} ({val}), czyli ' + ('cieplej' if p < 0 else 'zimniej')
 
 
+SEZ_OD = 2020
+
+
+def sg(p): return ('+' if p > 0 else '') + str(p)
+
+
 def html_sum(I):
+    lm = I['lm']; ly = I['ly']
     o = '<ul class="sd-sum">'
-    o += f'<li><b>{MIES[I["lm"] - 1].capitalize()} {I["ly"]}:</b> {r0(I["lv"])} stopniodni – {ryr(I["lpy"], f'w {MIES_L[I["lm"] - 1]} {I["ly"] - 1}', r0(I["ly0"]))}.</li>'
+    o += f'<li><b>{MIES[lm - 1].capitalize()} {ly}:</b> {r0(I["lv"])} stopniodni – {ryr(I["lpy"], f"w {MIES_L[lm - 1]} {ly - 1}", r0(I["ly0"]))}. Średnia {MIES_D[lm - 1]} z lat {ly - 10}–{ly - 1}: {r0(I["la"])} ({sg(I["lp"])}%).</li>'
     if I['ps'] is not None:
-        o += f'<li><b>Sezon grzewczy {sl(I["ps"])} od 1 września do {pdat(I["pb"])}:</b> {r0(I["pv"])} stopniodni – {ryr(I["ppy"], f'w tym samym okresie sezonu {sl(I["ps"] - 1)}', r0(I["pv0"]))}.</li>'
+        o += f'<li><b>Sezon grzewczy {sl(I["ps"])} od 1 września do {pdat(I["pb"])}:</b> {r0(I["pv"])} stopniodni – {ryr(I["ppy"], f"w tym samym okresie sezonu {sl(I['ps'] - 1)}", r0(I["pv0"]))}. Średnia tego okresu z 10 sezonów ({sl(I["base"][0])}–{sl(I["lc"])}): {r0(I["pa"])} ({sg(I["pp"])}%).</li>'
     else:
         lcv = I['sez'][I['lc']]; pr = I['sez'][I['lc'] - 1]
-        o += f'<li><b>Sezon grzewczy {sl(I["lc"])} (wrzesień–maj):</b> {r0(lcv)} stopniodni – {ryr(pct(lcv, pr), f'w sezonie {sl(I["lc"] - 1)}', r0(pr))}.</li>'
+        o += f'<li><b>Sezon grzewczy {sl(I["lc"])} (wrzesień–maj):</b> {r0(lcv)} stopniodni – {ryr(pct(lcv, pr), f"w sezonie {sl(I['lc'] - 1)}", r0(pr))}. Średnia 10 sezonów ({sl(I["base"][0])}–{sl(I["lc"])}): {r0(I["avg_s"])} ({sg(pct(lcv, I["avg_s"]))}%).</li>'
     return o + '</ul>'
 
 
 def html_sez(S, I):
     o = '<table><thead><tr><th scope="col">Sezon grzewczy</th><th scope="col">Stopniodni IX–V</th><th scope="col">Zmiana do poprzedniego sezonu</th></tr></thead><tbody>'
     if I['ps'] is not None:
-        o += f'<tr><th scope="row">{sl(I["ps"])} (do {pdat(I["pb"])})</th><td>{r0(I["pv"])}</td><td>{("+" if I["ppy"] > 0 else "") + str(I["ppy"])}% wobec tego samego okresu {sl(I["ps"] - 1)}</td></tr>'
-    for y in reversed(I['base']):
-        p = pct(I['sez'][y], I['sez'][y - 1])
-        o += f'<tr><th scope="row">{sl(y)}</th><td>{r0(I["sez"][y])}</td><td>{("+" if p > 0 else "") + str(p)}%</td></tr>'
-    o += f'<tr><th scope="row">Średnia {sl(I["base"][0])}–{sl(I["lc"])}</th><td><b>{r0(I["avg_s"])}</b></td><td>–</td></tr>'
+        d = ddate(I['pb'])
+        o += f'<tr><th scope="row">{sl(I["ps"])} – trwa (1.09–{d.day}.{d.month:02d})</th><td>{r0(I["pv"])}</td><td>{sg(I["ppy"])}% wobec 1.09–{d.day}.{d.month:02d} sezonu {sl(I["ps"] - 1)}</td></tr>'
+    for y in range(I['lc'], SEZ_OD - 1, -1):
+        o += f'<tr><th scope="row">{sl(y)}</th><td>{r0(I["sez"][y])}</td><td>{sg(pct(I["sez"][y], I["sez"][y - 1]))}%</td></tr>'
+    o += f'<tr><th scope="row">Średnia 10 sezonów {sl(I["base"][0])}–{sl(I["lc"])}</th><td><b>{r0(I["avg_s"])}</b></td><td>–</td></tr>'
     return o + '</tbody></table>'
 
 
@@ -128,19 +135,39 @@ def html_tldr(I, msc_w, st_n):
 
 def hub_row(c, I):
     a = f'<a href="stopniodni-{c["slug"]}.html">{c["n"]}</a>' if c.get('slug') else c['n']
-    s = f'<tr><th scope="row">{a}</th><td>{r0(I["lv"])}</td><td>{r0(I["la"])}</td><td>{("+" if I["lp"] > 0 else "") + str(I["lp"])}%</td>'
+    s = f'<tr><th scope="row">{a}</th><td>{r0(I["lv"])}</td><td>{r0(I["ly0"])}</td><td>{sg(I["lpy"])}%</td>'
     if I['ps'] is not None:
-        s += f'<td>{r0(I["pv"])}</td><td>{r0(I["pa"])}</td><td>{("+" if I["pp"] > 0 else "") + str(I["pp"])}%</td>'
+        s += f'<td>{r0(I["pv"])}</td><td>{r0(I["pv0"])}</td><td>{sg(I["ppy"])}%</td>'
     else:
-        lcv = I['sez'][I['lc']]; p = pct(lcv, I['avg_s'])
-        s += f'<td>{r0(lcv)}</td><td>{r0(I["avg_s"])}</td><td>{("+" if p > 0 else "") + str(p)}%</td>'
+        lcv = I['sez'][I['lc']]; pr = I['sez'][I['lc'] - 1]
+        s += f'<td>{r0(lcv)}</td><td>{r0(pr)}</td><td>{sg(pct(lcv, pr))}%</td>'
     return s + '</tr>'
 
 
+def agg(Is):
+    # średnia arytmetyczna z miast – „Polska (średnia 19 miast)”
+    n = len(Is); I0 = Is[0]
+    A = {k: I0[k] for k in ('end', 'ly', 'lm', 'ps', 'lc', 'base')}
+    for k in ('lv', 'ly0', 'la') + (('pv', 'pv0', 'pa', 'pb') if I0['ps'] is not None else ()):
+        A[k] = sum(I[k] for I in Is) / n
+    if I0['ps'] is not None: A['pb'] = I0['pb']
+    A['sez'] = {y: sum(I['sez'][y] for I in Is) / n for y in I0['sez']}
+    A['avg_s'] = sum(I['avg_s'] for I in Is) / n
+    A['lp'] = pct(A['lv'], A['la']); A['lpy'] = pct(A['lv'], A['ly0'])
+    if I0['ps'] is not None: A['pp'] = pct(A['pv'], A['pa']); A['ppy'] = pct(A['pv'], A['pv0'])
+    return A
+
+
 def hub_head(I):
+    lm, ly = I['lm'], I['ly']
     if I['ps'] is not None:
-        d = ddate(I['pb']); sez = f'Sezon {sl(I["ps"])} (1.09–{d.day}.{d.month:02d})'; sav = f'Średnia 1.09–{d.day}.{d.month:02d} z 10 sezonów'
+        d = ddate(I['pb']); f = f'1.09–{d.day}.{d.month:02d}'
+        sez = f'Sezon {sl(I["ps"])} ({f})'; sav = f'{sl(I["ps"] - 1)} ({f})'
     else:
-        sez = f'Sezon {sl(I["lc"])}'; sav = 'Średnia 10 sezonów'
-    return (f'<table><thead><tr><th scope="col">Miasto</th><th scope="col">{MIES[I["lm"] - 1].capitalize()} {I["ly"]}</th><th scope="col">Średnia {MIES_D[I["lm"] - 1] if False else ""}{I["ly"] - 10}–{I["ly"] - 1}</th><th scope="col">Różnica</th>'
-            f'<th scope="col">{sez}</th><th scope="col">{sav}</th><th scope="col">Różnica</th></tr></thead><tbody>')
+        sez = f'Sezon {sl(I["lc"])}'; sav = f'Sezon {sl(I["lc"] - 1)}'
+    return (f'<table><thead><tr><th scope="col">Miasto</th><th scope="col">{MIES[lm - 1].capitalize()} {ly}</th><th scope="col">{MIES[lm - 1].capitalize()} {ly - 1}</th><th scope="col">Zmiana</th>'
+            f'<th scope="col">{sez}</th><th scope="col">{sav}</th><th scope="col">Zmiana</th></tr></thead><tbody>')
+
+
+def hub_avg(A):
+    return '<tr class="sd-avg">' + hub_row({'n': 'Polska – średnia 19 miast'}, A)[4:]

@@ -27,7 +27,7 @@ CSS = '''<style>.sd-sum{list-style:none;padding:0;margin:16px 0;display:grid;gap
 #sd-lista{position:absolute;left:0;right:0;top:100%;z-index:20;list-style:none;margin:4px 0 0;padding:6px;background:var(--card,#fff);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:300px;overflow:auto}#sd-lista li{padding:8px 10px;border-radius:8px;cursor:pointer;font-size:.92rem}#sd-lista li:hover{background:var(--soft)}
 .sd-sel{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:6px}
 .sd-wyn{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:16px 0 8px}.sd-wyn div{border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:4px}.sd-wyn span{font-size:.85rem;color:var(--muted)}.sd-wyn b{font-size:1.6rem;line-height:1.1}
-.sd-roz.cie{background:#E8F4EC;border-color:#BFDCC8}.sd-roz.zim{background:#FDECEC;border-color:#F2C4C4}#sd-tabele details{margin-top:14px}#sd-tabele summary{cursor:pointer;font-weight:600}
+.sd-roz.cie{background:#E8F4EC;border-color:#BFDCC8}.sd-roz.zim{background:#FDECEC;border-color:#F2C4C4}#sd-tabele h3{margin-top:18px}#sd-tabele2 h4{margin-top:22px}.sd-avg th,.sd-avg td{font-weight:700;background:var(--soft)}
 @media(max-width:560px){.sd-lok{grid-template-columns:1fr}}</style>'''
 
 
@@ -101,38 +101,40 @@ D = {}
 for n, sid, slug in MIASTA:
     S = load(sid); D[sid] = (S, info(S))
 Sw, Iw = D['352200375']
-hub_tab = hub_head(Iw) + ''.join(hub_row({'n': n, 'slug': slug}, D[sid][1]) for n, sid, slug in MIASTA) + '</tbody></table>'
+AP = agg([D[sid][1] for n, sid, slug in MIASTA])
+hub_tab = hub_head(Iw) + ''.join(hub_row({'n': n, 'slug': slug}, D[sid][1]) for n, sid, slug in MIASTA) + hub_avg(AP) + '</tbody></table>'
 LM = f'{MIES[Iw["lm"] - 1]} {Iw["ly"]}'
 def sgp(p): return ('+' if p > 0 else '') + str(p)
 # wnioski z tabeli
-by_l = sorted(MIASTA, key=lambda m: D[m[1]][1]['lp'])
-by_s = sorted(MIASTA, key=lambda m: D[m[1]][1]['sez'][D[m[1]][1]['lc']])
+by_l = sorted(MIASTA, key=lambda m: D[m[1]][1]['lpy'])
+by_s = sorted(MIASTA, key=lambda m: D[m[1]][1]['pv'])
 lc = Iw['lc']
 sez_min = min(D[m[1]][1]['avg_s'] for m in MIASTA); sez_max = max(D[m[1]][1]['avg_s'] for m in MIASTA)
 m_min = min(MIASTA, key=lambda m: D[m[1]][1]['avg_s']); m_max = max(MIASTA, key=lambda m: D[m[1]][1]['avg_s'])
-cieplej = sum(1 for m in MIASTA if D[m[1]][1]['lp'] < 0)
+cieplej = sum(1 for m in MIASTA if D[m[1]][1]['lpy'] < 0)
 
 H1 = 'Stopniodni w Polsce – aktualne dane IMGW i raport miesięczny'
 TITLE = 'Stopniodni w Polsce – aktualne dane IMGW, raport miesięczny'
 DESC = f'Liczba stopniodni grzania dla 19 miast i 54 stacji IMGW: ostatni miesiąc, bieżący sezon i 10 sezonów wstecz. Wzór, metoda Eurostat, dane co miesiąc.'
 SLUG = 'stopniodni.html'; URL = BASE + SLUG
-body = f'''<div class="tldr"><b>W skrócie</b><strong>Stopniodni (liczba stopniodni grzania)</strong> mówią, jak zimny był dany okres i ile ciepła potrzebował budynek do ogrzania. Dla każdego dnia liczy się różnicę 18°C minus średnia temperatura dobowa – tylko w dniach chłodniejszych niż 15°C – i sumuje za miesiąc lub sezon. Ta strona pokazuje aktualne stopniodni dla 19 miast i 54 stacji IMGW-PIB, przeliczane co miesiąc. {LM.capitalize()} w Warszawie: <strong>{r0(Iw["lv"])}</strong> stopniodni wobec {r0(Iw["ly0"])} w {MIES_L[Iw["lm"] - 1]} {Iw["ly"] - 1}.</div>
-<h2>Raport: {LM} i bieżący sezon grzewczy</h2>
-<p>Warszawa (stacja IMGW Warszawa-Okęcie) – najważniejsze liczby:</p>
-<div id="sd-sum">{html_sum(Iw)}</div>
-<p>W miesiącu {LM} było cieplej niż średnio w {cieplej} z 19 miast. Największe odchylenie w stronę ciepła: {by_l[0][0]} ({sgp(D[by_l[0][1]][1]["lp"])}%), w stronę zimna: {by_l[-1][0]} ({sgp(D[by_l[-1][1]][1]["lp"])}%). Najcieplejszym miastem tabeli w sezonie {sl(lc)} był {by_s[0][0]} ({r0(D[by_s[0][1]][1]["sez"][lc])} stopniodni), najzimniejszym {by_s[-1][0]} ({r0(D[by_s[-1][1]][1]["sez"][lc])}).</p>
-<h2 id="miasta">Stopniodni w 19 miastach – ostatni miesiąc i sezon</h2>
-<p>Dla każdego miasta stacja synoptyczna IMGW-PIB położona w mieście lub tuż obok (np. Kraków-Balice, Gdańsk-Świbno). Pierwsze trzy kolumny: ostatni pełny miesiąc i średnia tego miesiąca z 10 poprzednich lat. Trzy ostatnie: bieżący sezon grzewczy od 1 września do ostatniego dnia z danymi i średnia tego samego fragmentu sezonu z 10 poprzednich sezonów. Różnica dodatnia oznacza, że było zimniej niż średnio, ujemna – cieplej. Porównanie z dowolnym innym okresem zrobisz <a href="#stacja">w narzędziu poniżej</a>.</p>
+body = f'''<div class="tldr"><b>W skrócie</b><strong>Stopniodni (liczba stopniodni grzania)</strong> mówią, jak zimny był dany okres i ile ciepła potrzebował budynek do ogrzania. Dla każdego dnia liczy się różnicę 18°C minus średnia temperatura dobowa – tylko w dniach chłodniejszych niż 15°C – i sumuje za miesiąc lub sezon. Ta strona pokazuje aktualne stopniodni dla 19 miast i 54 stacji IMGW-PIB, przeliczane co miesiąc. {LM.capitalize()} – średnio w 19 miastach: <strong>{r0(AP["lv"])}</strong> stopniodni wobec {r0(AP["ly0"])} w {MIES_L[Iw["lm"] - 1]} {Iw["ly"] - 1}; w Warszawie {r0(Iw["lv"])} wobec {r0(Iw["ly0"])}.</div>
+<h2>Stopniodni w Polsce – najnowsze dane</h2>
+<p>Polska – średnia z 19 miast z tabeli poniżej (stacje IMGW-PIB):</p>
+<div id="sd-sum">{html_sum(AP)}</div>
+<p>{LM.capitalize()} był cieplejszy niż rok wcześniej w {cieplej} z 19 miast. Największa zmiana w stronę ciepła: {by_l[0][0]} ({sgp(D[by_l[0][1]][1]["lpy"])}% wobec {MIES_D[Iw["lm"] - 1]} {Iw["ly"] - 1}), w stronę zimna: {by_l[-1][0]} ({sgp(D[by_l[-1][1]][1]["lpy"])}%). Od początku sezonu {sl(Iw["ps"])} najcieplej było w mieście {by_s[0][0]} ({r0(D[by_s[0][1]][1]["pv"])} stopniodni), najzimniej w mieście {by_s[-1][0]} ({r0(D[by_s[-1][1]][1]["pv"])}).</p>
+<h2 id="miasta">Stopniodni w 19 miastach – {LM} i sezon {sl(Iw["ps"])} rok do roku</h2>
+<p>Dla każdego miasta stacja synoptyczna IMGW-PIB położona w mieście lub tuż obok (np. Kraków-Balice, Gdańsk-Świbno). Pierwsze trzy kolumny: ostatni pełny miesiąc i ten sam miesiąc rok wcześniej. Trzy ostatnie: bieżący sezon grzewczy od 1 września do ostatniego dnia z danymi i ten sam okres poprzedniego sezonu. Zmiana dodatnia oznacza, że było zimniej niż rok wcześniej, ujemna – cieplej. Ostatni wiersz to średnia z 19 miast. Porównanie z dowolnym innym okresem zrobisz <a href="#stacja">w narzędziu poniżej</a>.</p>
 <div class="tbl sd-t" id="sd-tab">{hub_tab}</div>
 <p class="sd-do">Dane do: {DANE_DO_PL}. Kolejne miesiące dopisują się automatycznie po publikacji danych przez IMGW-PIB (zwykle w pierwszej połowie następnego miesiąca).</p>
 
 <h2 id="stacja">Porównaj stopniodni dla swojej miejscowości</h2>
-<p>Wpisz kod pocztowy albo miejscowość, wybierz okres i to, z czym chcesz go porównać: ten sam miesiąc rok wcześniej, średnią z 5 lub 10 lat albo dowolny inny miesiąc, sezon czy rok z listy.</p>
+<p>Wpisz kod pocztowy albo miejscowość. Pokażę te same dane co dla Polski i Warszawy – ostatni miesiąc i bieżący sezon rok do roku, sezony grzewcze od {sl(SEZ_OD)} – a w porównywarce wybierzesz miesiąc, sezon lub rok i to, z czym go zestawić: ten sam okres rok wcześniej, średnią z 5 lub 10 lat albo dowolny okres z listy.</p>
 <div class="sd-pick" id="sd-narz">
 <div class="sd-lok"><label for="sd-kod">Kod pocztowy<input id="sd-kod" inputmode="numeric" placeholder="00-000" maxlength="6" autocomplete="postal-code"></label><label for="sd-msc">Miejscowość<input id="sd-msc" autocomplete="off" placeholder="np. Piaseczno" role="combobox" aria-controls="sd-lista"></label><ul id="sd-lista" role="listbox" hidden></ul></div>
 <p id="sd-stacja" class="sd-do">Wpisz kod pocztowy albo miejscowość – dobiorę najbliższą stację IMGW-PIB.</p>
+<div id="sd-tabele"></div>
 <div id="sd-por" hidden><div class="sd-sel"><label for="sd-typ">Porównuję<select id="sd-typ"><option value="m">miesiące</option><option value="s">sezony grzewcze (IX–V)</option><option value="r">lata kalendarzowe</option></select></label><label for="sd-a">Okres<select id="sd-a"></select></label><label for="sd-b">Porównaj z<select id="sd-b"></select></label></div><div id="sd-wynik" aria-live="polite"></div></div>
-<div id="sd-tabele"></div></div>
+<div id="sd-tabele2"></div></div>
 <p class="sd-do">Ten sam mechanizm wyboru stacji działa w <a href="kalkulator-kosztow-ogrzewania.html">kalkulatorze kosztów ogrzewania</a>, który dodatkowo odczytuje faktury za ciepło.</p>
 
 <h2>Wzór na stopniodni</h2>
@@ -190,14 +192,15 @@ body = f'''<div class="tldr"><b>W skrócie</b><span id="sd-tldr">{html_tldr(Iw, 
 <h2>Stopniodni w Warszawie – najnowsze dane</h2>
 <div id="sd-sum">{html_sum(Iw)}</div>
 <h2>Porównaj okresy – Warszawa</h2>
-<p>Wybierz miesiąc, sezon albo rok i porównaj go z tym samym okresem rok wcześniej, ze średnią z 5 lub 10 lat albo z dowolnym okresem z listy. Możesz też wpisać inny kod pocztowy lub miejscowość.</p>
+<p>Wybierz miesiąc, sezon albo rok (od 2020, najnowsze na górze) i porównaj go z tym samym okresem rok wcześniej, ze średnią z 5 lub 10 lat albo z dowolnym okresem z listy. Wpisz inny kod pocztowy lub miejscowość, a pokażę też najnowsze dane i tabele dla jej stacji.</p>
 <div class="sd-pick" id="sd-narz">
 <div class="sd-lok"><label for="sd-kod">Kod pocztowy<input id="sd-kod" inputmode="numeric" placeholder="00-000" maxlength="6" autocomplete="postal-code"></label><label for="sd-msc">Miejscowość<input id="sd-msc" autocomplete="off" placeholder="np. Piaseczno" role="combobox" aria-controls="sd-lista" value="Warszawa"></label><ul id="sd-lista" role="listbox" hidden></ul></div>
 <p id="sd-stacja" class="sd-do">Wpisz kod pocztowy albo miejscowość – dobiorę najbliższą stację IMGW-PIB.</p>
+<div id="sd-tabele"></div>
 <div id="sd-por" hidden><div class="sd-sel"><label for="sd-typ">Porównuję<select id="sd-typ"><option value="m">miesiące</option><option value="s">sezony grzewcze (IX–V)</option><option value="r">lata kalendarzowe</option></select></label><label for="sd-a">Okres<select id="sd-a"></select></label><label for="sd-b">Porównaj z<select id="sd-b"></select></label></div><div id="sd-wynik" aria-live="polite"></div></div>
-<div id="sd-tabele"></div></div>
+<div id="sd-tabele2"></div></div>
 <h2>Liczba stopniodni w sezonach grzewczych – Warszawa</h2>
-<p>Suma stopniodni od września do maja, stacja IMGW Warszawa-Okęcie. Ostatnia kolumna pokazuje zmianę względem poprzedniego sezonu: plus – zimniej, minus – cieplej.</p>
+<p>Suma stopniodni od września do maja, stacja IMGW Warszawa-Okęcie, sezony od {sl(SEZ_OD)}; bieżący sezon na górze. Ostatnia kolumna pokazuje zmianę względem poprzedniego sezonu: plus – zimniej, minus – cieplej.</p>
 <div class="tbl" id="sd-sez">{html_sez(Sw, Iw)}</div>
 <h2>Stopniodni w Warszawie miesiąc po miesiącu</h2>
 <p>Miesiące sezonu grzewczego w pięciu ostatnich pełnych sezonach i w sezonie bieżącym. „–” oznacza miesiąc, dla którego nie ma jeszcze danych.</p>
