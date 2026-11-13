@@ -1,8 +1,38 @@
-# Stopniodni – dane do kalkulatora na energetycznybroker.pl
+# Stopniodni grzania w Polsce – dane IMGW-PIB i kalkulator kosztów ogrzewania
 
-Dobowe średnie temperatury powietrza ze stacji synoptycznych IMGW-PIB (od 2015 r.), przygotowane dla
-[kalkulatora stopniodni i oszczędności na ogrzewaniu](https://energetycznybroker.pl/kalkulator-stopniodni.html)
-prowadzonego przez PROFIT ENERGY Konrad Bojakowski.
+Otwarte dane o stopniodniach grzania dla 54 stacji synoptycznych IMGW-PIB, aktualizowane co miesiąc.
+Z tych danych korzysta bezpłatny
+[kalkulator kosztów ogrzewania](https://energetycznybroker.pl/kalkulator-kosztow-ogrzewania.html)
+na energetycznybroker.pl, prowadzony przez PROFIT ENERGY Konrad Bojakowski – niezależnego doradcę i brokera energetycznego z Warszawy.
+
+## Czym są stopniodni
+
+Stopniodni grzania mierzą, jak zimny był dany okres. Dla każdego dnia ze średnią temperaturą poniżej 15°C
+liczy się różnicę między 18°C a średnią dobową temperaturą zewnętrzną (metoda Eurostatu). Suma z miesiąca
+albo sezonu pokazuje, ile budynek musiał grzać.
+
+Dzięki temu da się uczciwie porównać zużycie ciepła w różnych sezonach. Przykład dla Warszawy
+(stacja Warszawa-Okęcie): sezon grzewczy 2025/26 miał 3219 stopniodni, sezon 2024/25 – 2859,
+a średnia z sezonów 2016/17–2025/26 to 3024. Styczeń 2026 miał 728 stopniodni, styczeń 2025 – 481.
+
+## Jak skorygować faktury za ciepło o pogodę
+
+Przykład (zużycie umowne): budynek zużył w sezonie 2024/25 1000 GJ na ogrzewanie. Przy pogodzie sezonu
+2025/26 ten sam budynek, bez żadnych zmian, zużyłby ok. 1000 × 3219 ÷ 2859 ≈ 1126 GJ. Jeśli faktury
+pokazują mniej, to realna oszczędność; jeśli więcej, coś w budynku pracuje gorzej.
+
+To uproszczenie dotyczy części zużycia zależnej od pogody. Ta sama zasada jest stosowana przy
+rozliczaniu oszczędności energii według protokołu IPMVP. Dokładniejszy rachunek oddziela ciepłą wodę
+użytkową i stałe straty.
+
+## Gdzie zobaczyć gotowe liczby
+
+- [Kalkulator kosztów ogrzewania](https://energetycznybroker.pl/kalkulator-kosztow-ogrzewania.html) – wgrywasz faktury PDF za ciepło, kalkulator dobiera najbliższą stację IMGW i liczy zużycie z korektą pogodową.
+- [Stopniodni w Polsce – raport miesięczny](https://energetycznybroker.pl/stopniodni.html) – wszystkie stacje i miasta.
+- [Stopniodni Warszawa](https://energetycznybroker.pl/stopniodni-warszawa.html) – miesiąc po miesiącu, sezony od 2020/21.
+- [Poradnik: metoda stopniodni](https://energetycznybroker.pl/poradnik-metoda-stopniodni.html) – jak mierzy się oszczędności ciepła.
+
+## Zawartość repozytorium
 
 - `dane/stopniodni/stacje.json` – lista stacji (współrzędne, data początku serii, liczba uzupełnionych dni) i data ostatniej aktualizacji.
 - `dane/stopniodni/<kod>.json` – temperatury dobowe w dziesiątych częściach °C od daty `od`.
@@ -12,5 +42,9 @@ prowadzonego przez PROFIT ENERGY Konrad Bojakowski.
 Stopniodni grzania liczy się jako suma (18°C − średnia dobowa) dla dni ze średnią poniżej 15°C.
 Pojedyncze brakujące dni uzupełniane są wartością z najbliższej stacji; stacje wysokogórskie oraz stacje z ponad 10% uzupełnień są pomijane.
 
+## Źródła i licencja danych
+
 Źródłem pochodzenia danych jest Instytut Meteorologii i Gospodarki Wodnej – Państwowy Instytut Badawczy.
 Dane IMGW-PIB zostały przetworzone. Dane o miejscowościach: Państwowy Rejestr Nazw Geograficznych, GUGiK.
+
+Kontakt: PROFIT ENERGY Konrad Bojakowski, Warszawa – [energetycznybroker.pl](https://energetycznybroker.pl/), biuro@energetycznybroker.pl, tel. +48 722 149 551.
