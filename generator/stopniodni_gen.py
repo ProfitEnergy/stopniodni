@@ -113,12 +113,13 @@ def page(slug, title, desc, h1, crumbs, eyebrow, body, faq, lds, cfg):
 
 def dataset(url, name, desc, place, sid=None):
     d = {"@context": "https://schema.org", "@type": "Dataset", "name": name, "description": desc, "url": url, "inLanguage": "pl",
-         "creator": {"@id": BASE + "#firma"}, "isBasedOn": "https://danepubliczne.imgw.pl/", "temporalCoverage": f"2010-01-01/{DANE_DO}",
+         "creator": {"@type": "Organization", "@id": BASE + "#firma", "name": "PROFIT ENERGY Konrad Bojakowski", "url": BASE}, "license": "https://creativecommons.org/licenses/by/4.0/", "isBasedOn": "https://danepubliczne.imgw.pl/", "temporalCoverage": f"2010-01-01/{DANE_DO}",
          "spatialCoverage": {"@type": "Place", "name": place}, "dateModified": META['aktualizacja'], "isAccessibleForFree": True,
          "variableMeasured": "stopniodni grzania (HDD), baza 18°C, próg 15°C", "measurementTechnique": "Eurostat: suma (18°C − średnia temperatura dobowa) dla dni ze średnią poniżej 15°C",
          "creditText": "Źródłem pochodzenia danych jest Instytut Meteorologii i Gospodarki Wodnej – Państwowy Instytut Badawczy. Dane IMGW-PIB zostały przetworzone.",
          "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json",
-                           "contentUrl": f"https://cdn.jsdelivr.net/gh/ProfitEnergy/stopniodni@main/dane/stopniodni/{sid or 'stacje'}.json"}], "sameAs": GITHUB}
+                           "contentUrl": f"https://cdn.jsdelivr.net/gh/ProfitEnergy/stopniodni@main/dane/stopniodni/{sid or 'stacje'}.json"},
+                          {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://cdn.jsdelivr.net/gh/ProfitEnergy/stopniodni@main/dane/csv/stopniodni_miesieczne.csv"}], "sameAs": GITHUB}
     return d
 
 
