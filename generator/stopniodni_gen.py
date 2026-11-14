@@ -29,10 +29,24 @@ CSS = '''<style>.sd-sum{list-style:none;padding:0;margin:16px 0;display:grid;gap
 .sd-wyn{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:16px 0 8px}.sd-wyn div{border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:4px}.sd-wyn span{font-size:.85rem;color:var(--muted)}.sd-wyn b{font-size:1.6rem;line-height:1.1}
 .sd-roz.cie{background:#E8F4EC;border-color:#BFDCC8}.sd-roz.zim{background:#FDECEC;border-color:#F2C4C4}#sd-tabele h3{margin-top:18px}#sd-tabele2 h4{margin-top:22px}.pe-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:18px}.pe-g a{display:grid;gap:6px;padding:16px 18px;border:1px solid var(--line);border-radius:14px;text-decoration:none;color:var(--fg);background:var(--card,#fff)}.pe-g a:hover{border-color:var(--volt)}.pe-g b{font-size:1.02rem;line-height:1.3}.pe-g span{font-size:.9rem;color:var(--muted);line-height:1.4}.sd-avg th,.sd-avg td{font-weight:700;background:var(--soft)}
 @media(max-width:560px){.sd-lok{grid-template-columns:1fr}}
-.article{max-width:none}.sd-top{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:18px;align-items:start;margin:8px 0 10px}.sd-top .tldr{margin:0}.sd-kc{display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:14px;background:var(--card,#fff);border:2px solid var(--volt);box-shadow:0 10px 28px rgba(0,0,0,.08)}.sd-kc small{font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}.sd-kc strong{font-size:1.35rem;line-height:1.25}.sd-kc p{margin:0;font-size:.92rem;line-height:1.45}.sd-kc .btn{margin-top:auto;width:100%;padding:15px 16px;font-size:1.05rem;font-weight:700}@media(max-width:720px){.sd-top{grid-template-columns:1fr}}
+.article{max-width:none}.sd-top{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:18px;align-items:start;margin:8px 0 10px}.sd-top .tldr{margin:0}.sd-kc{display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:14px;background:var(--card,#fff);border:2px solid var(--volt);box-shadow:0 10px 28px rgba(0,0,0,.08)}.sd-kc small{font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}.sd-kc strong{font-size:1.35rem;line-height:1.25}.sd-kc p{margin:0;font-size:.92rem;line-height:1.45}.sd-kc .btn{margin-top:auto;width:100%;padding:15px 16px;font-size:1.05rem;font-weight:700}@media(max-width:720px){.sd-top{grid-template-columns:1fr}}.sd-rap{display:grid;grid-template-columns:240px minmax(0,1fr);gap:18px;align-items:center;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--card,#fff);text-decoration:none;color:inherit;margin:6px 0 14px}.sd-rap:hover{border-color:var(--volt)}.sd-rap img{width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}.sd-rap small{font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--volt-text,#8A5C00)}.sd-rap strong{display:block;font-size:1.25rem;line-height:1.25;margin:4px 0 6px}.sd-rap p{margin:0;font-size:.95rem}.sd-rap .go{display:inline-block;margin-top:10px;font-weight:700;text-decoration:underline}.sd-rapl{margin:0 0 18px;padding-left:18px}.sd-rl{margin:0 0 18px;padding:12px 16px;border-left:4px solid var(--volt);background:var(--soft);border-radius:0 10px 10px 0}@media(max-width:720px){.sd-rap{grid-template-columns:1fr}}
 </style>'''
 
 
+import json as _json
+RAP = _json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'raporty.json'))) if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'raporty.json')) else []
+def raporty_html():
+    if not RAP: return ''
+    r = RAP[0]
+    h = (f'<h2 id="raporty">Raporty miesięczne – stopniodni w Polsce</h2>'
+         f'<a class="sd-rap" href="{r["url"]}"><img src="{r["img"]}" width="1600" height="900" alt="Raport stopniodni {r["miesiac"]} – mapa Polski" loading="lazy"><span><small>Najnowszy raport · {r["data"]}</small><strong>{r["miesiac"]} w stopniodniach</strong><p>{r["opis"]}</p><span class="go">Czytaj raport →</span></span></a>')
+    if len(RAP) > 1:
+        h += '<p><b>Wcześniejsze raporty:</b></p><ul class="sd-rapl">' + ''.join(f'<li><a href="{x["url"]}">{x["miesiac"]}</a> – {x["opis"]}</li>' for x in RAP[1:]) + '</ul>'
+    return h
+def raport_link():
+    if not RAP: return ''
+    r = RAP[0]
+    return f'<p class="sd-rl"><b>Raport miesięczny:</b> <a href="{r["url"]}">{r["miesiac"]} w stopniodniach</a> – {r["opis"]}</p>'
 def page(slug, title, desc, h1, crumbs, eyebrow, body, faq, lds, cfg):
     kh = 'kalkulator-kosztow-ogrzewania.html' + ('?msc=Warszawa' if cfg.get('typ') == 'miasto' else '')
     kc = ('<aside class="sd-kc" aria-label="Kalkulator kosztów ogrzewania"><small>Kalkulator kosztów ogrzewania</small>'
@@ -136,6 +150,7 @@ TITLE = 'Stopniodni w Polsce – aktualne dane IMGW, raport miesięczny'
 DESC = f'Liczba stopniodni grzania dla 19 miast i 54 stacji IMGW: ostatni miesiąc, bieżący sezon i 10 sezonów wstecz. Wzór, metoda Eurostat, dane co miesiąc.'
 SLUG = 'stopniodni.html'; URL = BASE + SLUG
 body = f'''<div class="tldr"><b>W skrócie</b><strong>Stopniodni (liczba stopniodni grzania)</strong> mówią, jak zimny był dany okres i ile ciepła potrzebował budynek do ogrzania. Dla każdego dnia liczy się różnicę 18°C minus średnia temperatura dobowa – tylko w dniach chłodniejszych niż 15°C – i sumuje za miesiąc lub sezon. Ta strona pokazuje aktualne stopniodni dla 19 miast i 54 stacji IMGW-PIB, przeliczane co miesiąc. {LM.capitalize()} – średnio w 19 miastach: <strong>{r0(AP["lv"])}</strong> stopniodni wobec {r0(AP["ly0"])} w {MIES_L[Iw["lm"] - 1]} {Iw["ly"] - 1}; w Warszawie {r0(Iw["lv"])} wobec {r0(Iw["ly0"])}.</div>
+{raporty_html()}
 <h2>Stopniodni w Polsce – najnowsze dane</h2>
 <p>Polska – średnia z 19 miast z tabeli poniżej (stacje IMGW-PIB):</p>
 <div id="sd-sum">{html_sum(AP)}</div>
@@ -207,6 +222,7 @@ maz_tab = f'<table><thead><tr><th scope="col">Miejscowość</th><th scope="col">
 lata = html_lata(Sw, Iw)
 v2025 = r0(sdd(Sw, mstart(2025, 1), mend(2025, 12)))
 body = f'''<div class="tldr"><b>W skrócie</b><span id="sd-tldr">{html_tldr(Iw, "w Warszawie", "Warszawa-Okęcie")}</span> Stopniodni liczę metodą Eurostatu (18°C, dni poniżej 15°C) z dobowych temperatur IMGW-PIB; dane dopisują się co miesiąc.</div>
+{raport_link()}
 <h2>Stopniodni w Warszawie – najnowsze dane</h2>
 <div id="sd-sum">{html_sum(Iw)}</div>
 <h2>Porównaj okresy – Warszawa</h2>
