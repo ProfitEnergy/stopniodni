@@ -61,7 +61,7 @@ def page(slug, title, desc, h1, crumbs, eyebrow, body, faq, lds, cfg):
     cr = ' › '.join([f'<a href="{u}">{n}</a>' for n, u in crumbs] + [crumbs and h1.split(' – ')[0]])
     main = (f'<main><section class="phero"><div class="wrap"><p class="crumbs">{cr}</p>'
             f'<span class="eyebrow">{eyebrow}</span><h1 style="margin-top:10px">{h1}</h1>'
-            f'<div class="byline"><img src="img/konrad-bojakowski.webp" alt="" width="44" height="44"><span><b style="color:var(--fg)">Konrad Bojakowski</b>, doradca energetyczny PROFIT ENERGY · aktualizacja: {DATE_PL} · dane IMGW do: <span id="sd-do">{DANE_DO_PL}</span></span></div></div></section>'
+            f'<div class="byline"><img src="img/konrad-bojakowski.webp" alt="Konrad Bojakowski – doradca energetyczny" width="44" height="44"><span><b style="color:var(--fg)">Konrad Bojakowski</b>, doradca energetyczny PROFIT ENERGY · aktualizacja: {DATE_PL} · dane IMGW do: <span id="sd-do">{DANE_DO_PL}</span></span></div></div></section>'
             f'<section class="tight"><div class="wrap"><article class="article">{CSS}{body}{faq_html}</article></div></section>'
             f'<section class="tight pe-rel"><div class="wrap"><h2>Stopniodni w praktyce – ciepło w budynku</h2><p>Stopniodni pokazują pogodę. Te strony pokazują, co z tym zrobić na fakturze za ciepło.</p><div class="pe-g">'
             '<a href="water-ai.html"><b>Water AI – niższe koszty ogrzewania bez inwestycji</b><span>Sterowanie predykcyjne w modelu ESCO, płatność z oszczędności.</span></a>'
