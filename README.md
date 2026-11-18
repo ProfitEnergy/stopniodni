@@ -53,3 +53,7 @@ Dane IMGW-PIB zostały przetworzone. Dane o miejscowościach: Państwowy Rejestr
 Kontakt: PROFIT ENERGY Konrad Bojakowski, Warszawa – [energetycznybroker.pl](https://energetycznybroker.pl/), biuro@energetycznybroker.pl, tel. +48 722 149 551.
 
 Licencja opracowania: CC BY 4.0 – przy wykorzystaniu prosimy o podanie źródła „PROFIT ENERGY Konrad Bojakowski (energetycznybroker.pl) na podstawie danych IMGW-PIB”.
+
+## Ceny RDN (rynek dnia następnego) – kopia danych PSE
+
+Folder `dane/rdn/` to kopia publicznych cen SDAC dla Polski z API PSE S.A. (`api.raporty.pse.pl/api/csdac-pln`), w zł/MWh, co 15 minut, od 14.06.2024. Pliki `RRRR-MM.json` (doba → lista `[okres, cena]`) i `ostatnie.json` (ostatnie 3 doby). Aktualizacja co godzinę (`.github/workflows/rdn.yml`). Używane jako zapas przez stronę https://energetycznybroker.pl/ceny-energii-rdn.html, gdy API PSE nie odpowiada. Źródło danych: PSE S.A.
