@@ -57,3 +57,7 @@ Licencja opracowania: CC BY 4.0 – przy wykorzystaniu prosimy o podanie źród�
 ## Ceny RDN (rynek dnia następnego) – kopia danych PSE
 
 Folder `dane/rdn/` to kopia publicznych cen SDAC dla Polski z API PSE S.A. (`api.raporty.pse.pl/api/csdac-pln`), w zł/MWh, co 15 minut, od 14.06.2024. Pliki `RRRR-MM.json` (doba → lista `[okres, cena]`) i `ostatnie.json` (ostatnie 3 doby). Aktualizacja co godzinę (`.github/workflows/rdn.yml`). Używane jako zapas przez stronę https://energetycznybroker.pl/ceny-energii-rdn.html, gdy API PSE nie odpowiada. Źródło danych: PSE S.A.
+
+## Gaz – indeks TGEgasDA (Rynek Dnia Następnego gazu) – kopia danych TGE
+
+`dane/rdng/tgegasda.json` – dzienny indeks TGEgasDA (zł/MWh) od 2023 r., z publicznych danych opóźnionych TGE S.A. (wykres indeksu na tge.pl/gaz-rdn). Aktualizacja co godzinę (`.github/workflows/rdng.yml`). Używane przez https://energetycznybroker.pl/ceny-gazu-rdn.html. Źródło danych: TGE S.A.
