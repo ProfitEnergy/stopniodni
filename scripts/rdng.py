@@ -33,7 +33,10 @@ def main():
     dane = {}
     if os.path.exists(OUT):
         with open(OUT, encoding='utf-8') as f:
-            dane = json.load(f).get('dni', {})
+            j = json.load(f)
+        dane = j.get('dni', {})
+        if j.get('klucz') != 'dzien_dostawy':  # stary format: data sesji -> przesuń o +1 dzień
+            dane = {(date.fromisoformat(d) + timedelta(days=1)).isoformat(): v for d, v in dane.items()}
     dzis = date.today()
     pelna = '--pelna' in sys.argv or len(dane) < 30
     od = START if pelna else dzis - timedelta(days=21)
@@ -42,16 +45,19 @@ def main():
         for x in okno(k):
             try:
                 if x.get('kurs') not in (None, ''):
-                    dane[x['date']] = round(float(x['kurs']), 2)
+                    # TGE podaje datę sesji; indeks dotyczy dostawy w dniu następnym
+                    dd = date.fromisoformat(x['date'][:10]) + timedelta(days=1)
+                    dane[dd.isoformat()] = round(float(x['kurs']), 2)
             except (TypeError, ValueError, KeyError):
                 pass
         k -= timedelta(days=8)
         time.sleep(1 if pelna else 0.3)
-    wynik = {'zrodlo': 'TGE S.A., indeks TGEgasDA (Rynek Dnia Następnego gazu), dane opóźnione', 'aktualizacja': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%MZ'), 'dni': dict(sorted(dane.items()))}
+    wynik = {'zrodlo': 'TGE S.A., indeks TGEgasDA (Rynek Dnia Następnego gazu), dane opóźnione', 'klucz': 'dzien_dostawy', 'aktualizacja': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%MZ'), 'dni': dict(sorted(dane.items()))}
     stare = None
     if os.path.exists(OUT):
         with open(OUT, encoding='utf-8') as f:
-            stare = json.load(f).get('dni')
+            sj = json.load(f)
+            stare = sj.get('dni') if sj.get('klucz') == 'dzien_dostawy' else None
     if stare == wynik['dni']:
         print('bez zmian', len(dane)); return
     with open(OUT, 'w', encoding='utf-8') as f:
