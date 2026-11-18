@@ -61,3 +61,7 @@ Folder `dane/rdn/` to kopia publicznych cen SDAC dla Polski z API PSE S.A. (`api
 ## Gaz – indeks TGEgasDA (Rynek Dnia Następnego gazu) – kopia danych TGE
 
 `dane/rdng/tgegasda.json` – dzienny indeks TGEgasDA (zł/MWh) od 2023 r., z publicznych danych opóźnionych TGE S.A. (wykres indeksu na tge.pl/gaz-rdn). Aktualizacja co godzinę (`.github/workflows/rdng.yml`). Używane przez https://energetycznybroker.pl/ceny-gazu-rdn.html. Źródło danych: TGE S.A.
+
+## Opinie – liczniki na energetycznybroker.pl
+
+`dane/opinie/opinie.json` – liczba opinii w Google, na Facebooku, Oferteo i w zestawieniu Złota Firma. Aktualizowane codziennie przez zadanie zaplanowane Claude (sprawdzenie profili). Strona główna i „O mnie” podmieniają liczniki po załadowaniu.
