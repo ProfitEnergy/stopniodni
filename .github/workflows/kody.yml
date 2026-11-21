@@ -3,6 +3,7 @@ name: Kody pocztowe z PRG GUGiK
 on:
   workflow_dispatch:
   push:
+    branches: [main]
     paths:
       - 'scripts/kody.py'
       - '.github/workflows/kody.yml'
