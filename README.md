@@ -31,6 +31,10 @@ użytkową i stałe straty.
 - [Stopniodni w Polsce – raport miesięczny](https://energetycznybroker.pl/stopniodni.html) – wszystkie stacje i miasta.
 - [Stopniodni Warszawa](https://energetycznybroker.pl/stopniodni-warszawa.html) – miesiąc po miesiącu, sezony od 2020/21.
 - [Poradnik: metoda stopniodni](https://energetycznybroker.pl/poradnik-metoda-stopniodni.html) – jak mierzy się oszczędności ciepła.
+- [Czy budynek zużywa za dużo ciepła](https://energetycznybroker.pl/czy-budynek-zuzywa-za-duzo-ciepla.html) – wskaźnik GJ/m² z korektą pogodową.
+- [Porównanie zużycia ciepła wielu budynków](https://energetycznybroker.pl/porownanie-zuzycia-ciepla-wielu-budynkow.html) – benchmark dla spółdzielni, zarządców i gmin.
+- [Ciepłomierz – jak odczytać GJ, moc i temperatury](https://energetycznybroker.pl/cieplomierz-jak-odczytac.html).
+- [Ile można zaoszczędzić na ogrzewaniu](https://energetycznybroker.pl/ile-mozna-zaoszczedzic-na-ogrzewaniu.html).
 
 ## Zawartość repozytorium
 
