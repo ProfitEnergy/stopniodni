@@ -1,6 +1,6 @@
 pobieram https://opendata.geoportal.gov.pl/prg/adresy/PRG-punkty_adresowe.zip
-rozmiar 806452550
-pliki w zip: 16 ['28_warminsko-mazurskie_13.11.2026_12.11.54.gml', '12_malopolskie_13.11.2026_12.12.30.gml', '08_lubuskie_13.11.2026_12.12.54.gml', '26_swietokrzyskie_13.11.2026_12.13.09.gml', '10_lodzkie_13.11.2026_12.13.36.gml', '22_pomorskie_13.11.2026_12.14.04.gml', '16_opolskie_13.11.2026_12.14.22.gml', '30_wielkopolskie_13.11.2026_12.14.55.gml', '14_mazowieckie_13.11.2026_12.15.58.gml', '04_kujawsko-pomorskie_13.11.2026_12.16.36.gml', '24_slaskie_13.11.2026_12.17.19.gml', '20_podlaskie_13.11.2026_12.17.48.gml', '18_podkarpackie_13.11.2026_12.18.14.gml', '02_dolnoslaskie_13.11.2026_12.18.45.gml', '06_lubelskie_13.11.2026_12.19.17.gml', '32_zachodniopomorskie_13.11.2026_12.19.39.gml']
+rozmiar 806709595
+pliki w zip: 16 ['28_warminsko-mazurskie_20.11.2026_11.40.24.gml', '12_malopolskie_20.11.2026_11.41.02.gml', '08_lubuskie_20.11.2026_11.41.26.gml', '26_swietokrzyskie_20.11.2026_11.41.42.gml', '10_lodzkie_20.11.2026_11.42.08.gml', '22_pomorskie_20.11.2026_11.42.38.gml', '16_opolskie_20.11.2026_11.42.57.gml', '30_wielkopolskie_20.11.2026_11.43.32.gml', '14_mazowieckie_20.11.2026_11.44.40.gml', '04_kujawsko-pomorskie_20.11.2026_11.45.21.gml', '24_slaskie_20.11.2026_11.46.02.gml', '20_podlaskie_20.11.2026_11.46.31.gml', '18_podkarpackie_20.11.2026_11.46.55.gml', '02_dolnoslaskie_20.11.2026_11.47.26.gml', '06_lubelskie_20.11.2026_11.47.58.gml', '32_zachodniopomorskie_20.11.2026_11.48.22.gml']
 gml: 16
 próbka: <prgad:AD_PunktAdresowy xmlns:prgad="https://geoportal.gov.pl/schemas/prgad/1.0" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" gml:id="PL.ZIPIN.1023.EMUiA_eb83db08-146b-451b-8c3c-2c47db5180f4_2017-04-07T15_13_07_02_00">
 			<prgad:idIIP>
@@ -21,21 +21,21 @@ próbka: <prgad:AD_PunktAdresowy xmlns:prgad="https://geoportal.gov.pl/schemas/p
 			<prgad:miejscowosc xlink:href="#PL.ZIPIN.1023.EMUiA_0365747_2017-04-07T15_12_08_02_00"/>
 		</prgad:AD_PunktAdresowy>
 	
-02_dolnoslaskie_13.11.2026_12.18.45.gml punktów: 564668
-04_kujawsko-pomorskie_13.11.2026_12.16.36.gml punktów: 397450
-06_lubelskie_13.11.2026_12.19.17.gml punktów: 608724
-08_lubuskie_13.11.2026_12.12.54.gml punktów: 204064
-10_lodzkie_13.11.2026_12.13.36.gml punktów: 605033
-12_malopolskie_13.11.2026_12.12.30.gml punktów: 867115
-14_mazowieckie_13.11.2026_12.15.58.gml punktów: 1273586
-16_opolskie_13.11.2026_12.14.22.gml punktów: 231038
-18_podkarpackie_13.11.2026_12.18.14.gml punktów: 570527
-20_podlaskie_13.11.2026_12.17.48.gml punktów: 291458
-22_pomorskie_13.11.2026_12.14.04.gml punktów: 449276
-24_slaskie_13.11.2026_12.17.19.gml punktów: 855053
-26_swietokrzyskie_13.11.2026_12.13.09.gml punktów: 334219
-28_warminsko-mazurskie_13.11.2026_12.11.54.gml punktów: 262946
-30_wielkopolskie_13.11.2026_12.14.55.gml punktów: 806767
-32_zachodniopomorskie_13.11.2026_12.19.39.gml punktów: 310546
-zamiana osi: True 17.802824526993735 181.61738341129433
+02_dolnoslaskie_20.11.2026_11.47.26.gml punktów: 564816
+04_kujawsko-pomorskie_20.11.2026_11.45.21.gml punktów: 397559
+06_lubelskie_20.11.2026_11.47.58.gml punktów: 608166
+08_lubuskie_20.11.2026_11.41.26.gml punktów: 204113
+10_lodzkie_20.11.2026_11.42.08.gml punktów: 605192
+12_malopolskie_20.11.2026_11.41.02.gml punktów: 867381
+14_mazowieckie_20.11.2026_11.44.40.gml punktów: 1273943
+16_opolskie_20.11.2026_11.42.57.gml punktów: 231117
+18_podkarpackie_20.11.2026_11.46.55.gml punktów: 570684
+20_podlaskie_20.11.2026_11.46.31.gml punktów: 291501
+22_pomorskie_20.11.2026_11.42.38.gml punktów: 449460
+24_slaskie_20.11.2026_11.46.02.gml punktów: 855251
+26_swietokrzyskie_20.11.2026_11.41.42.gml punktów: 334290
+28_warminsko-mazurskie_20.11.2026_11.40.24.gml punktów: 263015
+30_wielkopolskie_20.11.2026_11.43.32.gml punktów: 806878
+32_zachodniopomorskie_20.11.2026_11.48.22.gml punktów: 310619
+zamiana osi: True 17.76792928123881 181.6159226124406
 kodów: 20555
