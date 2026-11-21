@@ -1,5 +1,9 @@
 # Stopniodni grzania w Polsce – dane IMGW-PIB i kalkulator kosztów ogrzewania
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24418033.svg)](https://doi.org/10.5281/zenodo.24418033)
+
+Cytowanie: Bojakowski, K. (PROFIT ENERGY Konrad Bojakowski). *Stopniodni grzania w Polsce – stacje synoptyczne IMGW-PIB*. Zenodo. https://doi.org/10.5281/zenodo.24418033
+
 Otwarte dane o stopniodniach grzania dla 54 stacji synoptycznych IMGW-PIB, aktualizowane co miesiąc.
 Z tych danych korzysta bezpłatny
 [kalkulator kosztów ogrzewania](https://energetycznybroker.pl/kalkulator-kosztow-ogrzewania.html)
