@@ -1,16 +1,43 @@
 {
   "title": "Stopniodni grzania w Polsce – stacje synoptyczne IMGW-PIB (miesięcznie, od 2010 r.)",
   "upload_type": "dataset",
-  "description": "<p>Miesięczne i sezonowe stopniodni grzania (heating degree days, HDD) dla 54 stacji synoptycznych IMGW-PIB w Polsce, od stycznia 2010 r., aktualizowane co miesiąc. Metoda Eurostatu: suma (18°C − średnia dobowa temperatura powietrza) dla dni ze średnią poniżej 15°C.</p><p>Dane służą do korekty pogodowej zużycia ciepła: porównywania faktur za ogrzewanie między sezonami, rozliczania oszczędności (IPMVP, model ESCO) i oceny efektów termomodernizacji.</p><p>Pliki: dane/csv/stopniodni_miesieczne.csv, dane/csv/stopniodni_sezony.csv, dane/csv/stacje.csv. Pojedyncze brakujące dni uzupełniane są wartością z najbliższej stacji; stacje wysokogórskie i stacje z ponad 10% uzupełnień są pominięte.</p><p>Źródłem pochodzenia danych jest Instytut Meteorologii i Gospodarki Wodnej – Państwowy Instytut Badawczy. Dane IMGW-PIB zostały przetworzone.</p><p>Wizualizacja, wyszukiwarka dla dowolnej miejscowości i kalkulator kosztów ogrzewania: <a href=\"https://energetycznybroker.pl/stopniodni.html\">energetycznybroker.pl/stopniodni.html</a>, <a href=\"https://energetycznybroker.pl/kalkulator-kosztow-ogrzewania.html\">kalkulator kosztów ogrzewania</a>, <a href=\"https://energetycznybroker.pl/poradnik-metoda-stopniodni.html\">metoda stopniodni</a>.</p>",
+  "description": "<p>Miesięczne i sezonowe stopniodni grzania (heating degree days, HDD) dla 54 stacji synoptycznych IMGW-PIB w Polsce, od stycznia 2010 r., aktualizowane co miesiąc. Metoda Eurostatu: suma (18°C − średnia dobowa temperatura powietrza) dla dni ze średnią poniżej 15°C.</p><p>Dane służą do korekty pogodowej zużycia ciepła: porównywania faktur za ogrzewanie między sezonami, rozliczania oszczędności (IPMVP, model ESCO) i oceny efektów termomodernizacji.</p><p>Pliki: dane/csv/stopniodni_miesieczne.csv, dane/csv/stopniodni_sezony.csv, dane/csv/stacje.csv. Pojedyncze brakujące dni uzupełniane są wartością z najbliższej stacji; stacje wysokogórskie i stacje z ponad 10% uzupełnień są pominięte.</p><p>Zakres: 54 stacje IMGW-PIB, w tym stacje 19 miast prezentowanych w tabeli na <a href=\"https://energetycznybroker.pl/stopniodni.html\">energetycznybroker.pl/stopniodni.html</a>. Dane od 1 stycznia 2010 r. do 31 października 2026 r. (wersja v2026.11); kolejne wersje co miesiąc, po publikacji danych przez IMGW-PIB.</p><p>Jak cytować: Bojakowski K., PROFIT ENERGY Konrad Bojakowski (2026). Stopniodni grzania w Polsce – stacje IMGW-PIB (od 2010 r.). Zenodo. https://doi.org/10.5281/zenodo.24418033. Dane źródłowe: IMGW-PIB (dane przetworzone).</p><p>Źródłem pochodzenia danych jest Instytut Meteorologii i Gospodarki Wodnej – Państwowy Instytut Badawczy. Dane IMGW-PIB zostały przetworzone.</p><p>Wizualizacja, wyszukiwarka dla dowolnej miejscowości i kalkulator kosztów ogrzewania: <a href=\"https://energetycznybroker.pl/stopniodni.html\">energetycznybroker.pl/stopniodni.html</a>, <a href=\"https://energetycznybroker.pl/kalkulator-kosztow-ogrzewania.html\">kalkulator kosztów ogrzewania</a>, <a href=\"https://energetycznybroker.pl/poradnik-metoda-stopniodni.html\">metoda stopniodni</a>.</p>",
   "creators": [
-    {"name": "Bojakowski, Konrad", "affiliation": "PROFIT ENERGY Konrad Bojakowski"}
+    {
+      "name": "Bojakowski, Konrad",
+      "affiliation": "PROFIT ENERGY Konrad Bojakowski"
+    }
   ],
   "license": "cc-by-4.0",
-  "keywords": ["stopniodni", "heating degree days", "HDD", "degree days", "korekta pogodowa", "ogrzewanie", "IMGW", "Polska", "Poland", "efektywność energetyczna", "IPMVP"],
+  "keywords": [
+    "stopniodni",
+    "heating degree days",
+    "HDD",
+    "degree days",
+    "korekta pogodowa",
+    "ogrzewanie",
+    "IMGW",
+    "Polska",
+    "Poland",
+    "efektywność energetyczna",
+    "IPMVP"
+  ],
   "language": "pol",
   "related_identifiers": [
-    {"identifier": "https://energetycznybroker.pl/stopniodni.html", "relation": "isDocumentedBy", "resource_type": "other"},
-    {"identifier": "https://energetycznybroker.pl/kalkulator-kosztow-ogrzewania.html", "relation": "isSupplementedBy", "resource_type": "software"},
-    {"identifier": "https://github.com/ProfitEnergy/stopniodni", "relation": "isSupplementTo", "resource_type": "dataset"}
+    {
+      "identifier": "https://energetycznybroker.pl/stopniodni.html",
+      "relation": "isDocumentedBy",
+      "resource_type": "other"
+    },
+    {
+      "identifier": "https://energetycznybroker.pl/kalkulator-kosztow-ogrzewania.html",
+      "relation": "isSupplementedBy",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://github.com/ProfitEnergy/stopniodni",
+      "relation": "isSupplementTo",
+      "resource_type": "dataset"
+    }
   ]
 }

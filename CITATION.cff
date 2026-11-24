@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "Przy wykorzystaniu danych prosimy o podanie źródła: PROFIT ENERGY Konrad Bojakowski (energetycznybroker.pl) na podstawie danych IMGW-PIB."
+message: "Przy wykorzystaniu danych prosimy o podanie źródła: Bojakowski K., PROFIT ENERGY Konrad Bojakowski (2026). Stopniodni grzania w Polsce – stacje IMGW-PIB (od 2010 r.). Zenodo. https://doi.org/10.5281/zenodo.24418033. Dane źródłowe: IMGW-PIB (dane przetworzone)."
 title: "Stopniodni grzania w Polsce – stacje synoptyczne IMGW-PIB"
 type: dataset
 authors:
@@ -7,6 +7,7 @@ authors:
     given-names: Konrad
     affiliation: "PROFIT ENERGY Konrad Bojakowski"
     website: "https://energetycznybroker.pl"
+doi: "10.5281/zenodo.24418033"
 license: CC-BY-4.0
 url: "https://energetycznybroker.pl/stopniodni.html"
 repository-code: "https://github.com/ProfitEnergy/stopniodni"
