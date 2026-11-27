@@ -34,6 +34,7 @@ użytkową i stałe straty.
 - [Kalkulator kosztów ogrzewania](https://energetycznybroker.pl/kalkulator-kosztow-ogrzewania.html) – wgrywasz faktury PDF za ciepło, kalkulator dobiera najbliższą stację IMGW i liczy zużycie z korektą pogodową.
 - [Stopniodni w Polsce – raport miesięczny](https://energetycznybroker.pl/stopniodni.html) – wszystkie stacje i miasta.
 - [Stopniodni Warszawa](https://energetycznybroker.pl/stopniodni-warszawa.html) – miesiąc po miesiącu, sezony od 2020/21.
+- [Stopniodni dla gminy – kalkulator](https://energetycznybroker.pl/stopniodni-dla-gminy.html) – każda z 2324 gmin: miesiące i sezony od 2010, CSV; gmina ze stacją w promieniu 10 km dostaje jej pomiary, pozostałe – średnią ważoną odległością z 3 najbliższych stacji.
 - [Poradnik: metoda stopniodni](https://energetycznybroker.pl/poradnik-metoda-stopniodni.html) – jak mierzy się oszczędności ciepła.
 - [Czy budynek zużywa za dużo ciepła](https://energetycznybroker.pl/czy-budynek-zuzywa-za-duzo-ciepla.html) – wskaźnik GJ/m² z korektą pogodową.
 - [Porównanie zużycia ciepła wielu budynków](https://energetycznybroker.pl/porownanie-zuzycia-ciepla-wielu-budynkow.html) – benchmark dla spółdzielni, zarządców i gmin.
@@ -48,6 +49,7 @@ użytkową i stałe straty.
 - `dane/csv/stopniodni_sezony.csv` – stopniodni w sezonach grzewczych wrzesień–maj.
 - `dane/csv/stacje.csv` – lista stacji.
 - `dane/miejscowosci/` – miejscowości z Państwowego Rejestru Nazw Geograficznych (GUGiK) ze współrzędnymi.
+- `dane/gminy.json` – 2324 gminy (siedziba gminy, numer województwa, współrzędne, dopisek dla gmin o tej samej nazwie) – wybór stacji w kalkulatorze stopniodni dla gminy; budowany skryptem `scripts/gminy.py` z `dane/miejscowosci/`.
 - `scripts/aktualizuj.py` – pobranie i przeliczenie danych; uruchamiane automatycznie 8. i 15. dnia miesiąca (GitHub Actions).
 
 Stopniodni grzania liczy się jako suma (18°C − średnia dobowa) dla dni ze średnią poniżej 15°C.

@@ -170,6 +170,7 @@ body = f'''<div class="tldr"><b>W skrócie</b><strong>Stopniodni (liczba stopnio
 <div id="sd-por" hidden><div class="sd-sel"><label for="sd-typ">Porównuję<select id="sd-typ"><option value="m">miesiące</option><option value="s">sezony grzewcze (IX–V)</option><option value="r">lata kalendarzowe</option></select></label><label for="sd-a">Okres<select id="sd-a"></select></label><label for="sd-b">Porównaj z<select id="sd-b"></select></label></div><div id="sd-wynik" aria-live="polite"></div></div>
 <div id="sd-tabele2"></div></div>
 <p class="sd-do">Ten sam mechanizm wyboru stacji działa w <a href="kalkulator-kosztow-ogrzewania.html">kalkulatorze kosztów ogrzewania</a>, który dodatkowo odczytuje faktury za ciepło.</p>
+<p class="sd-do">Szukasz danych dla całej gminy, także takiej bez własnej stacji? Skorzystaj z <a href="stopniodni-dla-gminy.html">kalkulatora stopniodni dla gminy</a> – obejmuje 2324 gminy i pokazuje, z której stacji pochodzą liczby.</p>
 
 <h2>Wzór na stopniodni</h2>
 <p>Stosuję metodę Eurostatu, tę samą, którą Unia Europejska publikuje dla wszystkich krajów:</p>
