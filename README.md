@@ -35,6 +35,7 @@ użytkową i stałe straty.
 - [Stopniodni w Polsce – raport miesięczny](https://energetycznybroker.pl/stopniodni.html) – wszystkie stacje i miasta.
 - [Stopniodni Warszawa](https://energetycznybroker.pl/stopniodni-warszawa.html) – miesiąc po miesiącu, sezony od 2020/21.
 - [Stopniodni dla gminy – kalkulator](https://energetycznybroker.pl/stopniodni-dla-gminy.html) – każda z 2324 gmin: miesiące i sezony od 2010, CSV; gmina ze stacją w promieniu 10 km dostaje jej pomiary, pozostałe – średnią ważoną odległością z 3 najbliższych stacji.
+- [Widżet „Stopniodni dla Twojej gminy” – jak wstawić na stronę](https://energetycznybroker.pl/jak-wstawic-widzet-stopniodni.html) – bezpłatna ramka dla stron gmin, spółdzielni i wspólnot: 5 największych miejscowości gminy, sezony grzewcze od 2021/22 z wykresem i miesiące rok do roku (lista miejscowości: `dane/gminy-miejscowosci.json`).
 - [Poradnik: metoda stopniodni](https://energetycznybroker.pl/poradnik-metoda-stopniodni.html) – jak mierzy się oszczędności ciepła.
 - [Czy budynek zużywa za dużo ciepła](https://energetycznybroker.pl/czy-budynek-zuzywa-za-duzo-ciepla.html) – wskaźnik GJ/m² z korektą pogodową.
 - [Porównanie zużycia ciepła wielu budynków](https://energetycznybroker.pl/porownanie-zuzycia-ciepla-wielu-budynkow.html) – benchmark dla spółdzielni, zarządców i gmin.
