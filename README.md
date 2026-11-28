@@ -50,6 +50,7 @@ użytkową i stałe straty.
 - `dane/csv/stacje.csv` – lista stacji.
 - `dane/miejscowosci/` – miejscowości z Państwowego Rejestru Nazw Geograficznych (GUGiK) ze współrzędnymi.
 - `dane/gminy.json` – 2324 gminy (siedziba gminy, numer województwa, współrzędne, dopisek dla gmin o tej samej nazwie) – wybór stacji w kalkulatorze stopniodni dla gminy; budowany skryptem `scripts/gminy.py` z `dane/miejscowosci/`.
+- `dane/gminy-miejscowosci.json` – do 5 największych miejscowości każdej gminy (kolejność jak w `dane/gminy.json`; nazwa, szerokość, długość, liczba mieszkańców) – widok „5 największych miejscowości” w widżecie i kalkulatorze stopniodni dla gminy. Liczba mieszkańców: Wikidata (P1082, w większości wyniki NSP 2021), dopasowana do `dane/miejscowosci/` po nazwie i odległości do 6 km.
 - `scripts/aktualizuj.py` – pobranie i przeliczenie danych; uruchamiane automatycznie 8. i 15. dnia miesiąca (GitHub Actions).
 
 Stopniodni grzania liczy się jako suma (18°C − średnia dobowa) dla dni ze średnią poniżej 15°C.
